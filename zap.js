@@ -51,7 +51,7 @@ async function enviarWhatsApp(msg) {
     }
 
     // 🔥 NUMERO CORRETO COM 9
-    const numero = "5537998087729";
+    const numero = "seu numero wpp";
 
     console.log("Buscando número:", numero);
 
