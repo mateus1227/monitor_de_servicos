@@ -9,16 +9,16 @@
 
   "email": {
     "enabled": true,
-    "host": "smtp.medcinhospitaldia.com.br",
+    "host": "smtp do seu email",
     "port": 587,
     "secure": false,
-    "user": "ti@medcinhospitaldia.com.br",
-    "pass": "@TiMed2025",
-    "to": "ti@medcinhospitaldia.com.br"
+    "user": "email remetente",
+    "pass": "senha email",
+    "to": "email destinatario"
   },
 
   "whatsapp": {
     "enabled": true,
-    "grupo": "120363425024439323@g.us"
+    "grupo": "id do grupo de whatsapp"
   }
 }
