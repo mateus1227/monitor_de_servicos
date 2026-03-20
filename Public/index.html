@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8" />
@@ -387,7 +387,7 @@ margin-top:10px;
 display:flex;
 flex-direction:column;
 gap:8px;
-max-height: 240px;
+max-height: 600px;
 overflow:auto;
 padding-right:6px;
 }
@@ -474,7 +474,6 @@ white-space:nowrap;
 @media (prefers-reduced-motion: reduce){
 *{ transition:none !important; animation:none !important; }
 }
-/* ===================== TV / WALLBOARD MODE ===================== */
 body.tv{
 overflow-y:auto;
 }
@@ -555,7 +554,6 @@ width:auto;
 padding: 8px 10px;
 border-radius: 14px;
 }
-/* Modal Styles */
 .modal-overlay{
 position:fixed;
 inset:0;
@@ -607,9 +605,8 @@ justify-content:flex-end;
 <header>
 <div class="header-inner">
 <div class="brand">
-<img src="medcin.png" alt="Logo" onerror="this.style.display='none'"/>
+<img src="logo.png" alt="logo" style="width:150px;height:auto;">
 <div class="title">
-<strong>Monitoramento</strong>
 <span>Monitoramento • Alertas • Relatórios</span>
 </div>
 </div>
@@ -634,6 +631,7 @@ Auto
 </div>
 </div>
 </header>
+
 <main>
 <!-- ===================== MONITOR ===================== -->
 <section class="panel" id="panelMonitor">
@@ -647,6 +645,7 @@ Auto
 <span id="globalText">Carregando…</span>
 </div>
 </div>
+
 <div class="banner" id="banner">
 <div style="display:flex;gap:10px;align-items:flex-start">
 <div style="font-size:18px;line-height:1">🚨</div>
@@ -659,6 +658,7 @@ Auto
 <button class="btn btn-ghost" id="btnMute">🔇 Silenciar</button>
 </div>
 </div>
+
 <div class="summary">
 <div class="metric">
 <div class="k">Total</div>
@@ -701,6 +701,7 @@ Auto
 <div class="s">se painel travar</div>
 </div>
 </div>
+
 <div class="controls">
 <input class="input" id="q" placeholder="Buscar por nome ou URL/IP…" />
 <select class="select" id="filtroTipo">
@@ -734,6 +735,7 @@ Agrupar
 </div>
 <span class="pill"><span class="dot" id="countDot"></span><span id="countHint">—</span></span>
 </div>
+
 <div class="incident">
 <div class="inc-card">
 <div class="hrow">
@@ -745,6 +747,7 @@ Agrupar
 </div>
 <div class="inc-list" id="incList"></div>
 </div>
+
 <div class="inc-card">
 <div class="hrow">
 <div>
@@ -801,6 +804,7 @@ Agrupar
 </div>
 </div>
 </div>
+
 <div class="inc-card" style="margin-top:12px">
 <div class="hrow">
 <div>
@@ -811,80 +815,239 @@ Agrupar
 </div>
 <div class="inc-list" id="slowList"></div>
 </div>
+
 <div class="grid" id="cards"></div>
 </section>
+
 <!-- ===================== REPORTS ===================== -->
 <section class="panel hide" id="panelReports">
-<div class="hrow">
-<div>
-<h2>Relatórios</h2>
-<div class="muted">Quedas/voltas, tempo OFF, slow, flapping, MTTR e export CSV</div>
-</div>
-<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-<button class="btn btn-ghost" id="btnExportCsv">⬇️ Export CSV</button>
-<button class="btn" id="btnLoadReports">🔎 Gerar</button>
-</div>
-</div>
-<div class="controls" style="margin-top:10px">
-<input class="select" id="repFrom" type="date" />
-<input class="select" id="repTo" type="date" />
-<select class="select" id="repType">
-<option value="">Tipo: Todos</option>
-<option value="OFFLINE">OFFLINE</option>
-<option value="SLOW">SLOW</option>
-<option value="FLAP">FLAP</option>
+  <div class="hrow">
+    <div>
+      <h2>Relatórios de Disponibilidade</h2>
+      <div class="muted">Disponibilidade, indisponibilidade, ranking de pior serviço e SLA mensal</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+      <button class="btn btn-ghost" id="btnExportCsv">⬇️ Export CSV</button>
+      <button class="btn btn-ghost" id="btnExportXlsx">📗 Export XLSX</button>
+      <button class="btn btn-ghost" id="btnToggleCharts">📈 Exibir gráficos</button>
+      <button class="btn" id="btnLoadReports">🔎 Gerar</button>
+    </div>
+  </div>
+
+  <div class="controls" style="margin-top:10px">
+    <input class="select" id="repFrom" type="date" />
+    <input class="select" id="repTo" type="date" />
+    <select class="select" id="repApi">
+      <option value="">Serviço: Todos</option>
+    </select>
+    <select class="select" id="repTipo">
+      <option value="">Tipo: Todos</option>
+    </select>
+ <select class="select" id="repMonthsBack">
+  <option value="1" selected >SLA: último mês</option>
+  <option value="3">SLA: últimos 3 meses</option>
+  <option value="6" >SLA: últimos 6 meses</option>
+  <option value="12">SLA: últimos 12 meses</option>
 </select>
-<select class="select" id="repApi">
-<option value="">Serviço: Todos</option>
-</select>
-<span class="pill"><span class="dot" id="repDot"></span><span id="repHint">—</span></span>
-</div>
-<div class="summary" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:12px">
-<div class="metric">
-<div class="k">Incidentes</div>
-<div class="v" id="repInc">—</div>
-<div class="s">no período</div>
-</div>
-<div class="metric">
-<div class="k">Downtime total</div>
-<div class="v" id="repDown">—</div>
-<div class="s">tempo OFFLINE somado</div>
-</div>
-<div class="metric">
-<div class="k">MTTR</div>
-<div class="v" id="repMttr">—</div>
-<div class="s">tempo médio para voltar</div>
-</div>
-<div class="metric">
-<div class="k">Serviço pior</div>
-<div class="v" id="repWorst">—</div>
-<div class="s">maior downtime</div>
-</div>
-</div>
-<div class="divider"></div>
-<div class="incident">
-<div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
-<div class="hrow">
-<div>
-<h2>Top serviços</h2>
-<div class="muted">Por downtime e por incidentes</div>
-</div>
-<span class="tag warn" id="repTopHint">—</span>
-</div>
-<div class="inc-list" id="repTopList" style="max-height:420px"></div>
-</div>
-<div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
-<div class="hrow">
-<div>
-<h2>Incidentes detalhados</h2>
-<div class="muted">Lista de quedas/voltas e degradações</div>
-</div>
-<span class="tag warn" id="repRows">0</span>
-</div>
-<div class="inc-list" id="repList" style="max-height:420px"></div>
-</div>
-</div>
+    <span class="pill"><span class="dot" id="repDot"></span><span id="repHint">—</span></span>
+  </div>
+
+  <div class="summary" style="grid-template-columns:repeat(8,minmax(0,1fr));margin-top:12px">
+    <div class="metric">
+      <div class="k">Itens</div>
+      <div class="v" id="repTotalItens">—</div>
+      <div class="s">itens ativos no cálculo</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">Período selecionado</div>
+      <div class="v" id="repPeriodo">—</div>
+      <div class="s" id="repPeriodoSec">—</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">Disponibilidade</div>
+      <div class="v" id="repDisponibilidade">—</div>
+      <div class="s">percentual consolidado do período</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">Indisponibilidade</div>
+      <div class="v" id="repIndisponibilidade">—</div>
+      <div class="s">lacuna em relação à disponibilidade</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">Tempo indisponível no período</div>
+      <div class="v" id="repTempoIndispReal">—</div>
+      <div class="s" id="repTempoIndispRealDesc">—</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">SLA mensal médio</div>
+      <div class="v" id="repSlaMedio">—</div>
+      <div class="s">média dos meses exibidos</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">Meta SLA</div>
+      <div class="v" id="repMetaSla">—</div>
+      <div class="s">referência executiva</div>
+    </div>
+
+    <div class="metric">
+      <div class="k">Itens abaixo da meta</div>
+      <div class="v" id="repAbaixoMeta">—</div>
+      <div class="s" id="repAbaixoMetaDesc">—</div>
+    </div>
+  </div>
+
+  <div id="reportsChartsWrap" class="hide" style="margin-top:14px">
+    <div class="incident">
+      <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+        <div class="hrow">
+          <div>
+            <h2>Evolução do SLA</h2>
+            <div class="muted">Tendência mensal consolidada</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <canvas id="chartSlaTrend"></canvas>
+        </div>
+      </div>
+
+      <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+        <div class="hrow">
+          <div>
+            <h2>Disponibilidade por tipo</h2>
+            <div class="muted">Comparativo entre categorias</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <canvas id="chartTypeAvailability"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="incident" style="margin-top:12px">
+      <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+        <div class="hrow">
+          <div>
+            <h2>Top 10 piores serviços</h2>
+            <div class="muted">Menor disponibilidade no período</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <canvas id="chartWorstServices"></canvas>
+        </div>
+      </div>
+
+      <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+        <div class="hrow">
+          <div>
+            <h2>Tempo disponível x indisponível</h2>
+            <div class="muted">Visão consolidada do período com percentual</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <canvas id="chartAvailabilitySplit"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="incident" style="margin-top:12px">
+      <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+        <div class="hrow">
+          <div>
+            <h2>Meta x realizado</h2>
+            <div class="muted">Comparativo do SLA real com a meta executiva</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <canvas id="chartTargetVsActual"></canvas>
+        </div>
+      </div>
+
+      <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+        <div class="hrow">
+          <div>
+            <h2>Serviços abaixo da meta</h2>
+            <div class="muted">Quantidade de itens dentro e fora do alvo</div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <canvas id="chartBelowTarget"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="incident">
+    <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+      <div class="hrow">
+        <div>
+          <h2>Resumo geral</h2>
+          <div class="muted">Indicador: Disponibilidade de sistemas críticos</div>
+        </div>
+        <span class="tag ok" id="repOverallBadge">GERAL</span>
+      </div>
+      <div class="inc-list" id="repOverallList" style="max-height:420px"></div>
+    </div>
+
+    <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+      <div class="hrow">
+        <div>
+          <h2>Ranking de pior serviço</h2>
+          <div class="muted">Menor disponibilidade no período</div>
+        </div>
+        <span class="tag bad" id="repWorstCount">0</span>
+      </div>
+      <div class="inc-list" id="repWorstList" style="max-height:420px"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="incident">
+    <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+      <div class="hrow">
+        <div>
+          <h2>Disponibilidade por tipo</h2>
+          <div class="muted">Agrupamento por tipo do item</div>
+        </div>
+        <span class="tag warn" id="repTiposCount">0</span>
+      </div>
+      <div class="inc-list" id="repTiposList" style="max-height:420px"></div>
+    </div>
+
+    <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+      <div class="hrow">
+        <div>
+          <h2>SLA por mês</h2>
+          <div class="muted">Disponibilidade consolidada mês a mês</div>
+        </div>
+        <span class="tag ok" id="repSlaMonthsCount">0</span>
+      </div>
+      <div class="inc-list" id="repSlaList" style="max-height:420px"></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="inc-card" style="background: rgba(255,255,255,.03); box-shadow:none;">
+    <div class="hrow">
+      <div>
+        <h2>Disponibilidade por item</h2>
+        <div class="muted">Tempo disponível, indisponível e percentual por item cadastrado</div>
+      </div>
+      <span class="tag warn" id="repRows">0</span>
+    </div>
+    <div class="inc-list" id="repList" style="max-height:520px"></div>
+  </div>
 </section>
+
 <!-- ===================== ALERTS ===================== -->
 <section class="panel hide" id="panelAlerts">
 <div class="hrow">
@@ -929,6 +1092,7 @@ Agrupar
 </div>
 </div>
 </section>
+
 <!-- ===================== CRUD ===================== -->
 <section class="panel" id="panelCrud">
 <div class="hrow">
@@ -955,6 +1119,7 @@ Agrupar
 <option value="PABX">PABX</option>
 <option value="API">API</option>
 <option value="Banco">Banco</option>
+<option value="VPN">VPN</option>
 <option value="Outros">Outros</option>
 </select>
 <select id="metodo">
@@ -962,10 +1127,12 @@ Agrupar
 <option value="POST">HTTP POST</option>
 <option value="PING">PING (Servidor/IP)</option>
 <option value="TCP">TCP (IP + Porta)</option>
+<option value="VPN_JUMP">VPN_JUMP</option>
+<option value="TCP_JUMP">TCP_JUMP</option>
 </select>
 <input id="url" placeholder="URL ou IP (ex: https://... ou 192.168.0.10)" style="grid-column:1 / -1"/>
-<input id="timeout_ms" placeholder="Timeout (ms) ex: 5000" value="5000" />
-<input id="interval_ms" placeholder="Intervalo (ms) ex: 3000" value="3000" />
+<input id="timeout_ms" placeholder="Timeout (ms) tempo de resposta  antes de considerar falha ex: 5000"  />
+<input id="interval_ms" placeholder="Intervalo de checagem (ms) ex: 3000" />
 <input id="headers_json" placeholder='Headers JSON (opcional) ex: {"Authorization":"Bearer ..."}' />
 <input id="porta" placeholder="Porta TCP (ex: 3389 / 443 / 80)" />
 </div>
@@ -1059,989 +1226,1578 @@ Atalhos: <strong>/</strong> foco na busca • <strong>Esc</strong> limpar seleç
 <button class="chipBtn" id="tvScrollBtn" title="Auto-scroll">Scroll: ON</button>
 <button class="chipBtn" id="tvExitBtn" title="Sair do modo TV">Sair</button>
 </div>
+
 <script>
 // ===== Config =====
 const TZ = "America/Sao_Paulo";
 const SUMMARY_INTERVAL_MS = 5000;
 const LOGS_INTERVAL_MS = 15000;
-let ROTATION_INTERVAL_MS = 5000; // Padrão 5 segundos (editável pelo usuário)
+let ROTATION_INTERVAL_MS = 5000;
 const LOG_LIMIT = 180;
 const MAX_POINTS_CHART = 180;
+
 // ===== Estado =====
 const state = {
-apis: [],
-selectedId: null,
-pinnedId: null,
-pinnedByUser: false,
-rotationIndex: -1,
-muted: false,
-lastOfflineSet: new Set(),
-lastSummaryOkAt: null,
-lastSummaryErrAt: null,
-logsCache: new Map(),
-timers: { summary:null, logs:null, rotation:null, clock:null, stale:null },
-abort: { summary:null, logs:null, apisList:null, crud:null, reports:null, rules:null }
+  apis: [],
+  selectedId: null,
+  pinnedId: null,
+  pinnedByUser: false,
+  rotationIndex: -1,
+  muted: false,
+  lastOfflineSet: new Set(),
+  lastSummaryOkAt: null,
+  lastSummaryErrAt: null,
+  logsCache: new Map(),
+  timers: { summary:null, logs:null, rotation:null, clock:null, stale:null },
+  abort: { summary:null, logs:null, apisList:null, crud:null, reports:null, rules:null }
 };
+
 let chart = null;
 let currentThreshold = 1200;
+const REPORT_SLA_TARGET = 99.5;
+
+const reportCharts = {
+  slaTrend: null,
+  typeAvailability: null,
+  worstServices: null,
+  availabilitySplit: null,
+  targetVsActual: null,
+  belowTarget: null
+};
+
 // ===== Helpers =====
 const $ = (id) => document.getElementById(id);
+
 function nowBR(){ return new Date().toLocaleString("pt-BR",{hour12:false,timeZone:TZ}); }
 function brDate(){ return new Date().toLocaleDateString("pt-BR",{timeZone:TZ}); }
 function brTime(){ return new Date().toLocaleTimeString("pt-BR",{timeZone:TZ, hour12:false}); }
+
 function parseSqliteDateToUTC(s){
-if(!s || typeof s !== "string") return null;
-const iso = s.replace(" ", "T") + "Z";
-const d = new Date(iso);
-return isNaN(d.getTime()) ? null : d;
+  if(!s || typeof s !== "string") return null;
+  const iso = s.replace(" ", "T") + "Z";
+  const d = new Date(iso);
+  return isNaN(d.getTime()) ? null : d;
 }
+
 function formatBRFromSqlite(s){
-const d = parseSqliteDateToUTC(s);
-if(!d) return "—";
-return d.toLocaleString("pt-BR", { timeZone: TZ, hour12:false });
+  const d = parseSqliteDateToUTC(s);
+  if(!d) return "—";
+  return d.toLocaleString("pt-BR", { timeZone: TZ, hour12:false });
 }
+
 function msToHuman(ms){
-if(ms == null || !isFinite(ms)) return "—";
-ms = Math.max(0, Math.floor(ms));
-const s = Math.floor(ms/1000);
-const d = Math.floor(s/86400);
-const h = Math.floor((s%86400)/3600);
-const m = Math.floor((s%3600)/60);
-const ss = s%60;
-if(d>0) return `${d}d ${h}h`;
-if(h>0) return `${h}h ${m}m`;
-if(m>0) return `${m}m ${ss}s`;
-return `${ss}s`;
+  if(ms == null || !isFinite(ms)) return "—";
+  ms = Math.max(0, Math.floor(ms));
+  const s = Math.floor(ms/1000);
+  const d = Math.floor(s/86400);
+  const h = Math.floor((s%86400)/3600);
+  const m = Math.floor((s%3600)/60);
+  const ss = s%60;
+  if(d>0) return `${d}d ${h}h`;
+  if(h>0) return `${h}h ${m}m`;
+  if(m>0) return `${m}m ${ss}s`;
+  return `${ss}s`;
 }
+
 function humanSec(sec){
-if(sec == null) return "—";
-sec = Math.max(0, Math.floor(sec));
-const d = Math.floor(sec/86400);
-const h = Math.floor((sec%86400)/3600);
-const m = Math.floor((sec%3600)/60);
-const s = sec%60;
-if(d>0) return `${d}d ${h}h`;
-if(h>0) return `${h}h ${m}m`;
-if(m>0) return `${m}m ${s}s`;
-return `${s}s`;
+  if(sec == null) return "—";
+  sec = Math.max(0, Math.floor(sec));
+  const d = Math.floor(sec/86400);
+  const h = Math.floor((sec%86400)/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = sec%60;
+  if(d>0) return `${d}d ${h}h`;
+  if(h>0) return `${h}h ${m}m`;
+  if(m>0) return `${m}m ${s}s`;
+  return `${s}s`;
 }
+
+function secToHuman(sec){
+  sec = Math.max(0, Math.floor(Number(sec||0)));
+  const h = Math.floor(sec/3600);
+  const m = Math.floor((sec%3600)/60);
+  const s = sec%60;
+  if(h>0) return `${h}h ${m}m`;
+  if(m>0) return `${m}m ${s}s`;
+  return `${s}s`;
+}
+
+function secToHumanFull(sec){
+  sec = Math.max(0, Math.floor(Number(sec || 0)));
+  const d = Math.floor(sec / 86400);
+  const h = Math.floor((sec % 86400) / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+  const parts = [];
+  if (d > 0) parts.push(`${d}d`);
+  if (h > 0) parts.push(`${h}h`);
+  if (m > 0) parts.push(`${m}m`);
+  if (s > 0 || parts.length === 0) parts.push(`${s}s`);
+  return parts.join(" ");
+}
+
+function pctFmt(v){
+  const n = Number(v || 0);
+  return `${n.toFixed(4)}%`;
+}
+
+function pctFromParts(value, total){
+  const n = Number(value || 0);
+  const t = Number(total || 0);
+  if(!t) return "0.00%";
+  return `${((n / t) * 100).toFixed(2)}%`;
+}
+
+function metricLine(label, value){
+  return `
+    <div class="inc-item" style="cursor:default">
+      <div style="min-width:0">
+        <strong>${escapeHtml(label)}</strong>
+      </div>
+      <div style="text-align:right">
+        <span class="tag ok">${escapeHtml(String(value))}</span>
+      </div>
+    </div>
+  `;
+}
+
+function diffDaysInclusive(fromYmd, toYmd){
+  const a = new Date(fromYmd + "T00:00:00");
+  const b = new Date(toYmd + "T00:00:00");
+  const diffMs = b.getTime() - a.getTime();
+  const days = Math.floor(diffMs / 86400000) + 1;
+  return Math.max(1, days);
+}
+
+function avg(arr){
+  if(!arr || !arr.length) return 0;
+  return arr.reduce((s, v) => s + Number(v || 0), 0) / arr.length;
+}
+
+function formatMonthLabel(year, monthIndex){
+  const d = new Date(year, monthIndex, 1);
+  return d.toLocaleDateString("pt-BR", { month: "2-digit", year: "numeric" });
+}
+
+function getMonthRange(year, monthIndex){
+  const start = new Date(year, monthIndex, 1);
+  const end = new Date(year, monthIndex + 1, 0);
+  return {
+    from: ymd(start),
+    to: ymd(end),
+    label: formatMonthLabel(year, monthIndex)
+  };
+}
+
+async function loadMonthlySla(monthsBack, api = "", tipo = ""){
+  const out = [];
+  const now = new Date();
+
+  for(let i = monthsBack - 1; i >= 0; i--){
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const range = getMonthRange(d.getFullYear(), d.getMonth());
+
+    const qs = new URLSearchParams({ from: range.from, to: range.to });
+    if(api) qs.set("api_id", api);
+    if(tipo) qs.set("tipo", tipo);
+
+    const rep = await fetchJson(`/api/reports/availability?${qs.toString()}`, {}, "reports");
+    out.push({
+      label: range.label,
+      from: range.from,
+      to: range.to,
+      disponibilidade_pct: Number(rep?.overall?.disponibilidade_pct || 0),
+      indisponibilidade_pct: Number(rep?.overall?.indisponibilidade_pct || 0),
+      tempo_total_sec: Number(rep?.overall?.tempo_total_sec || 0),
+      tempo_disponivel_sec: Number(rep?.overall?.tempo_disponivel_sec || 0),
+      tempo_indisponivel_sec: Number(rep?.overall?.tempo_indisponivel_sec || 0),
+      total_itens: Number(rep?.overall?.total_itens || 0)
+    });
+  }
+
+  return out;
+}
+
 function rotationLabel(){
-const ms = Number(ROTATION_INTERVAL_MS || 0);
-if(ms <= 0) return "—";
-if(ms < 60000) return `${Math.round(ms/1000)}s`;
-if(ms % 60000 === 0) return `${Math.round(ms/60000)} min`;
-return `${(ms/60000).toFixed(1)} min`;
+  const ms = Number(ROTATION_INTERVAL_MS || 0);
+  if(ms <= 0) return "—";
+  if(ms < 60000) return `${Math.round(ms/1000)}s`;
+  if(ms % 60000 === 0) return `${Math.round(ms/60000)} min`;
+  return `${(ms/60000).toFixed(1)} min`;
 }
+
 function setAutoHint(){
-$("chartHint").textContent = `Modo: Auto (troca a cada ${rotationLabel()}) • Threshold: ${currentThreshold}ms`;
+  $("chartHint").textContent = `Modo: Auto (troca a cada ${rotationLabel()}) • Threshold: ${currentThreshold}ms`;
 }
+
 function escapeHtml(s){
-return String(s ?? "")
-.replaceAll("&","&amp;")
-.replaceAll("<","&lt;")
-.replaceAll(">","&gt;")
-.replaceAll('"',"&quot;")
-.replaceAll("'","&#039;");
+  return String(s ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
+
 function escapeAttr(s){
-return escapeHtml(s).replaceAll("\n"," ").replaceAll("\r"," ");
+  return escapeHtml(s).replaceAll("\n"," ").replaceAll("\r"," ");
 }
+
 function normalizeTipo(t){
-const s = String(t ?? "").trim();
-return s || "Sem tipo";
+  const s = String(t ?? "").trim();
+  return s || "Sem tipo";
 }
+
 function abortAndNew(kind){
-try { state.abort[kind]?.abort(); } catch(_){}
-const c = new AbortController();
-state.abort[kind] = c;
-return c.signal;
+  try { state.abort[kind]?.abort(); } catch(_){}
+  const c = new AbortController();
+  state.abort[kind] = c;
+  return c.signal;
 }
+
 async function fetchJson(url, opts={}, abortKind=null){
-const finalOpts = {...opts};
-if(abortKind){
-finalOpts.signal = abortAndNew(abortKind);
+  const finalOpts = {...opts};
+  if(abortKind){
+    finalOpts.signal = abortAndNew(abortKind);
+  }
+  const r = await fetch(url, finalOpts);
+  if(r.status === 403){ location.href="/login.html"; throw new Error("403"); }
+  if(!r.ok) throw new Error("HTTP " + r.status);
+  return r.json();
 }
-const r = await fetch(url, finalOpts);
-if(r.status === 403){ location.href="/login.html"; throw new Error("403"); }
-if(!r.ok) throw new Error("HTTP " + r.status);
-return r.json();
-}
+
 function setGlobal(status, text){
-$("globalPill").style.display = "";
-$("globalText").textContent = text;
-$("globalDot").className = "dot " + (status==="ok"?"ok":status==="bad"?"bad":"");
-$("globalPill").style.borderColor =
-status==="ok" ? "rgba(42,214,125,.26)" :
-status==="bad" ? "rgba(255,92,92,.26)" :
-"rgba(245,200,75,.26)";
-$("globalPill").style.background =
-status==="ok" ? "rgba(42,214,125,.10)" :
-status==="bad" ? "rgba(255,92,92,.10)" :
-"rgba(245,200,75,.10)";
+  $("globalPill").style.display = "";
+  $("globalText").textContent = text;
+  $("globalDot").className = "dot " + (status==="ok"?"ok":status==="bad"?"bad":"");
+  $("globalPill").style.borderColor =
+    status==="ok" ? "rgba(42,214,125,.26)" :
+    status==="bad" ? "rgba(255,92,92,.26)" :
+    "rgba(245,200,75,.26)";
+  $("globalPill").style.background =
+    status==="ok" ? "rgba(42,214,125,.10)" :
+    status==="bad" ? "rgba(255,92,92,.10)" :
+    "rgba(245,200,75,.10)";
 }
+
 function clearGlobal(){
-$("globalPill").style.display = "none";
-$("globalText").textContent = "";
+  $("globalPill").style.display = "none";
+  $("globalText").textContent = "";
 }
+
 function setHealth(status, text){
-$("healthText").textContent = text;
-$("healthDot").className = "dot " + (status==="ok"?"ok":status==="bad"?"bad":"");
-$("healthPill").style.borderColor =
-status==="ok" ? "rgba(42,214,125,.26)" :
-status==="bad" ? "rgba(255,92,92,.26)" :
-"rgba(245,200,75,.26)";
-$("healthPill").style.background =
-status==="ok" ? "rgba(42,214,125,.10)" :
-status==="bad" ? "rgba(255,92,92,.10)" :
-"rgba(245,200,75,.10)";
+  $("healthText").textContent = text;
+  $("healthDot").className = "dot " + (status==="ok"?"ok":status==="bad"?"bad":"");
+  $("healthPill").style.borderColor =
+    status==="ok" ? "rgba(42,214,125,.26)" :
+    status==="bad" ? "rgba(255,92,92,.26)" :
+    "rgba(245,200,75,.26)";
+  $("healthPill").style.background =
+    status==="ok" ? "rgba(42,214,125,.10)" :
+    status==="bad" ? "rgba(255,92,92,.10)" :
+    "rgba(245,200,75,.10)";
 }
+
 function statusTag(status){
-if(status==="ONLINE") return "ok";
-if(status==="OFFLINE") return "bad";
-return "warn";
+  if(status==="ONLINE") return "ok";
+  if(status==="OFFLINE") return "bad";
+  return "warn";
 }
+
 function statusLabel(status){
-if(status==="ONLINE") return "ONLINE";
-if(status==="OFFLINE") return "OFFLINE";
-return "UNKNOWN";
+  if(status==="ONLINE") return "ONLINE";
+  if(status==="OFFLINE") return "OFFLINE";
+  return "UNKNOWN";
 }
+
 function metodoLabel(item){
-const m = String(item.metodo || "").toUpperCase();
-if(m === "PING") return "PING";
-if(m === "TCP") return item.porta ? `TCP:${item.porta}` : "TCP";
-if(m === "POST") return "HTTP POST";
-return "HTTP GET";
+  const m = String(item.metodo || "").toUpperCase();
+  if(m === "PING") return "PING";
+  if(m === "TCP") return item.porta ? `TCP:${item.porta}` : "TCP";
+  if(m === "POST") return "HTTP POST";
+  return "HTTP GET";
 }
+
 function heatWidthMs(ms){
-const v = Math.max(0, Number(ms||0));
-const pct = Math.min(100, Math.round((v / 6000) * 100));
-return pct;
+  const v = Math.max(0, Number(ms||0));
+  const pct = Math.min(100, Math.round((v / 6000) * 100));
+  return pct;
 }
+
 // ===== Chart =====
 function ensureChart(){
-const ctx = $("grafico").getContext("2d");
-chart = new Chart(ctx, {
-type: "line",
-data: { labels: [], datasets: [{
-label:"Tempo (ms)",
-data: [],
-tension:.35,
-fill:false,
-pointRadius:0,
-pointHitRadius:10,
-borderWidth:2
-}] },
-options: {
-responsive:true, maintainAspectRatio:false,
-animation:{ duration: 220 },
-plugins:{ legend:{ display:false } },
-scales:{
-x:{ display:false },
-y:{ ticks:{ callback:(v)=> v+"ms" }, grid:{ color:"rgba(255,255,255,.06)" } }
+  const ctx = $("grafico").getContext("2d");
+  chart = new Chart(ctx, {
+    type: "line",
+    data: { labels: [], datasets: [{
+      label:"Tempo (ms)",
+      data: [],
+      tension:.35,
+      fill:false,
+      pointRadius:0,
+      pointHitRadius:10,
+      borderWidth:2
+    }] },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      animation:{ duration: 220 },
+      plugins:{ legend:{ display:false } },
+      scales:{
+        x:{ display:false },
+        y:{ ticks:{ callback:(v)=> v+"ms" }, grid:{ color:"rgba(255,255,255,.06)" } }
+      }
+    }
+  });
 }
-}
-});
-}
+
 function updateChart(labels, tempos){
-if(!chart) ensureChart();
-chart.data.labels = labels;
-chart.data.datasets[0].data = tempos;
-chart.update();
+  if(!chart) ensureChart();
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = tempos;
+  chart.update();
 }
+
 // ===== Clock / stale =====
 function tickClock(){ $("clockText").textContent = nowBR(); }
+
 function showStale(){
-if(!state.lastSummaryOkAt){
-$("mStale").textContent = "—";
-setHealth("warn", "Inicializando…");
-return;
+  if(!state.lastSummaryOkAt){
+    $("mStale").textContent = "—";
+    setHealth("warn", "Inicializando…");
+    return;
+  }
+  const ageMs = Date.now() - state.lastSummaryOkAt.getTime();
+  $("mStale").textContent = msToHuman(ageMs);
+  if(ageMs < SUMMARY_INTERVAL_MS * 2.5) setHealth("ok", "Atualizando OK");
+  else if(ageMs < SUMMARY_INTERVAL_MS * 6) setHealth("warn", "Atrasado");
+  else setHealth("bad", "Travou?");
 }
-const ageMs = Date.now() - state.lastSummaryOkAt.getTime();
-$("mStale").textContent = msToHuman(ageMs);
-if(ageMs < SUMMARY_INTERVAL_MS * 2.5) setHealth("ok", "Atualizando OK");
-else if(ageMs < SUMMARY_INTERVAL_MS * 6) setHealth("warn", "Atrasado");
-else setHealth("bad", "Travou?");
-}
+
 function setPinBadge(mode){
-const el = $("pinState");
-el.textContent = mode;
-el.className = "tag " + (mode === "OFFLINE" ? "bad" : mode === "FIXO" ? "ok" : "warn");
+  const el = $("pinState");
+  el.textContent = mode;
+  el.className = "tag " + (mode === "OFFLINE" ? "bad" : mode === "FIXO" ? "ok" : "warn");
 }
+
 function toast(msg){
-const old = $("globalText").textContent;
-const oldDot = $("globalDot").className;
-$("globalText").textContent = msg;
-setTimeout(()=>{
-$("globalText").textContent = old;
-$("globalDot").className = oldDot;
-}, 900);
+  const old = $("globalText").textContent;
+  const oldDot = $("globalDot").className;
+  $("globalText").textContent = msg;
+  setTimeout(()=>{
+    $("globalText").textContent = old;
+    $("globalDot").className = oldDot;
+  }, 900);
 }
+
 function beep(){
-try{
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
-const o = ctx.createOscillator();
-const g = ctx.createGain();
-o.type = "sine";
-o.frequency.value = 880;
-g.gain.value = 0.06;
-o.connect(g); g.connect(ctx.destination);
-o.start();
-setTimeout(()=>{ o.stop(); ctx.close(); }, 110);
-}catch(_){}
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = "sine";
+    o.frequency.value = 880;
+    g.gain.value = 0.06;
+    o.connect(g); g.connect(ctx.destination);
+    o.start();
+    setTimeout(()=>{ o.stop(); ctx.close(); }, 110);
+  }catch(_){}
 }
+
 // ===== Tipo filter populate =====
 function populateTipoFilter(){
-const sel = $("filtroTipo");
-if(!sel) return;
-const cur = sel.value || "all";
-const tipos = Array.from(new Set(state.apis.map(a => normalizeTipo(a.tipo))))
-.sort((a,b)=> a.localeCompare(b));
-sel.innerHTML = `<option value="all">Tipo: Todos</option>` +
-tipos.map(t => `<option value="${escapeAttr(t)}">${escapeHtml(t)}</option>`).join("");
-sel.value = tipos.includes(cur) ? cur : "all";
+  const sel = $("filtroTipo");
+  if(!sel) return;
+  const cur = sel.value || "all";
+  const tipos = Array.from(new Set(state.apis.map(a => normalizeTipo(a.tipo))))
+    .sort((a,b)=> a.localeCompare(b));
+  sel.innerHTML = `<option value="all">Tipo: Todos</option>` +
+    tipos.map(t => `<option value="${escapeAttr(t)}">${escapeHtml(t)}</option>`).join("");
+  sel.value = tipos.includes(cur) ? cur : "all";
 }
+
 // ===== Summary / filtros =====
 function atualizarResumo(data){
-const total = data.length;
-const ativas = data.filter(x=> Number(x.ativo) === 1).length;
-const online = data.filter(x=> x.last_status === "ONLINE").length;
-const offline = data.filter(x=> x.last_status === "OFFLINE").length;
-const onlineAtivos = data.filter(x=> Number(x.ativo)===1 && x.last_status==="ONLINE").length;
-const offlineAtivas = data.filter(x=> Number(x.ativo)===1 && x.last_status==="OFFLINE").length;
-const onlineTempos = data
-.filter(x=> Number(x.ativo)===1 && x.last_status==="ONLINE" && x.last_tempo!=null)
-.map(x=> Number(x.last_tempo)||0);
-const avg = onlineTempos.length
-? Math.round(onlineTempos.reduce((a,b)=>a+b,0)/onlineTempos.length)
-: null;
-$("mTotal").textContent = total;
-$("mAtivas").textContent = ativas;
-$("mOnline").textContent = online;
-$("mOffline").textContent = offline;
-$("mOnlineAtivos").textContent = onlineAtivos;
-$("mOfflineAtivas").textContent = offlineAtivas;
-$("mAvg").textContent = avg==null ? "—" : avg;
-if(offlineAtivas > 0) setGlobal("bad", `${offlineAtivas} ATIVO(s) OFFLINE`);
-else if(onlineAtivos > 0) setGlobal("ok", `Tudo ONLINE (ativos)`);
-else setGlobal("warn", `Aguardando dados…`);
-$("lastUpdate").textContent = `Atualizado: ${nowBR()}`;
+  const total = data.length;
+  const ativas = data.filter(x=> Number(x.ativo) === 1).length;
+  const online = data.filter(x=> x.last_status === "ONLINE").length;
+  const offline = data.filter(x=> x.last_status === "OFFLINE").length;
+  const onlineAtivos = data.filter(x=> Number(x.ativo)===1 && x.last_status==="ONLINE").length;
+  const offlineAtivas = data.filter(x=> Number(x.ativo)===1 && x.last_status==="OFFLINE").length;
+  const onlineTempos = data
+    .filter(x=> Number(x.ativo)===1 && x.last_status==="ONLINE" && x.last_tempo!=null)
+    .map(x=> Number(x.last_tempo)||0);
+  const avgMs = onlineTempos.length
+    ? Math.round(onlineTempos.reduce((a,b)=>a+b,0)/onlineTempos.length)
+    : null;
+
+  $("mTotal").textContent = total;
+  $("mAtivas").textContent = ativas;
+  $("mOnline").textContent = online;
+  $("mOffline").textContent = offline;
+  $("mOnlineAtivos").textContent = onlineAtivos;
+  $("mOfflineAtivas").textContent = offlineAtivas;
+  $("mAvg").textContent = avgMs==null ? "—" : avgMs;
+
+  if(offlineAtivas > 0) setGlobal("bad", `${offlineAtivas} ATIVO(s) OFFLINE`);
+  else if(onlineAtivos > 0) setGlobal("ok", `Tudo ONLINE (ativos)`);
+  else setGlobal("warn", `Aguardando dados…`);
+
+  $("lastUpdate").textContent = `Atualizado: ${nowBR()}`;
 }
+
 function getActiveOfflineListSorted(){
-return state.apis
-.filter(x => Number(x.ativo) === 1 && x.last_status === "OFFLINE")
-.slice()
-.sort((a,b)=>{
-const da = parseSqliteDateToUTC(a.last_data)?.getTime() ?? 0;
-const db = parseSqliteDateToUTC(b.last_data)?.getTime() ?? 0;
-return db - da;
-});
+  return state.apis
+    .filter(x => Number(x.ativo) === 1 && x.last_status === "OFFLINE")
+    .slice()
+    .sort((a,b)=>{
+      const da = parseSqliteDateToUTC(a.last_data)?.getTime() ?? 0;
+      const db = parseSqliteDateToUTC(b.last_data)?.getTime() ?? 0;
+      return db - da;
+    });
 }
+
 function getRotationListSorted(){
-return state.apis.slice().sort((a,b)=> (a.nome||"").localeCompare(b.nome||""));
+  return state.apis.slice().sort((a,b)=> (a.nome||"").localeCompare(b.nome||""));
 }
+
 function pickNextServiceIdForRotation(){
-const list = getRotationListSorted();
-if(!list.length) return null;
-state.rotationIndex = (state.rotationIndex + 1) % list.length;
-return Number(list[state.rotationIndex].id);
+  const list = getRotationListSorted();
+  if(!list.length) return null;
+  state.rotationIndex = (state.rotationIndex + 1) % list.length;
+  return Number(list[state.rotationIndex].id);
 }
+
 function syncRotationIndexToCurrent(id){
-const list = getRotationListSorted();
-const idx = list.findIndex(x=> Number(x.id) === Number(id));
-if(idx >= 0) state.rotationIndex = idx;
+  const list = getRotationListSorted();
+  const idx = list.findIndex(x=> Number(x.id) === Number(id));
+  if(idx >= 0) state.rotationIndex = idx;
 }
+
 function aplicarFiltrosEOrdenacao(data){
-const q = $("q").value.trim().toLowerCase();
-const filtroTipo = $("filtroTipo").value || "all";
-const filtro = $("filtro").value;
-const ordem = $("ordem").value;
-const slowMs = Number($("slowMs").value || currentThreshold);
-let out = data.slice();
-if(q){
-out = out.filter(x =>
-(x.nome || "").toLowerCase().includes(q) ||
-(x.url || "").toLowerCase().includes(q)
-);
+  const q = $("q").value.trim().toLowerCase();
+  const filtroTipo = $("filtroTipo").value || "all";
+  const filtro = $("filtro").value;
+  const ordem = $("ordem").value;
+  const slowMs = Number($("slowMs").value || currentThreshold);
+  let out = data.slice();
+
+  if(q){
+    out = out.filter(x =>
+      (x.nome || "").toLowerCase().includes(q) ||
+      (x.url || "").toLowerCase().includes(q)
+    );
+  }
+
+  if(filtroTipo !== "all"){
+    out = out.filter(x => normalizeTipo(x.tipo) === filtroTipo);
+  }
+  if(filtro === "ativos") out = out.filter(x => Number(x.ativo) === 1);
+  if(filtro === "inativos") out = out.filter(x => Number(x.ativo) === 0);
+  if(filtro === "online") out = out.filter(x => x.last_status === "ONLINE");
+  if(filtro === "offline") out = out.filter(x => x.last_status === "OFFLINE");
+  if(filtro === "offline_ativos") out = out.filter(x => Number(x.ativo)===1 && x.last_status==="OFFLINE");
+  if(filtro === "unknown") out = out.filter(x => x.last_status !== "ONLINE" && x.last_status !== "OFFLINE");
+  if(filtro === "slow") out = out.filter(x => x.last_status==="ONLINE" && x.last_tempo!=null && Number(x.last_tempo) >= slowMs);
+
+  const statusRank = (x) => {
+    const ativo = Number(x.ativo)===1;
+    const s = x.last_status;
+    if(s==="OFFLINE" && ativo) return 0;
+    if(s==="OFFLINE" && !ativo) return 1;
+    if(s!=="ONLINE" && s!=="OFFLINE") return 2;
+    return 3;
+  };
+
+  if(ordem === "nome"){
+    out.sort((a,b)=> (a.nome||"").localeCompare(b.nome||""));
+  } else if(ordem === "tempo"){
+    out.sort((a,b)=> (Number(a.last_tempo)||0) - (Number(b.last_tempo)||0));
+  } else if(ordem === "queda"){
+    out.sort((a,b)=>{
+      const da = parseSqliteDateToUTC(a.last_data)?.getTime() ?? 0;
+      const db = parseSqliteDateToUTC(b.last_data)?.getTime() ?? 0;
+      return db - da;
+    });
+  } else {
+    out.sort((a,b)=> statusRank(a) - statusRank(b));
+  }
+
+  $("countHint").textContent = `${out.length} serviço(s)`;
+  $("countDot").className = "dot " + (
+    out.some(x=>Number(x.ativo)===1 && x.last_status==="OFFLINE") ? "bad" :
+    out.some(x=>x.last_status==="ONLINE") ? "ok" : ""
+  );
+  return out;
 }
-if(filtroTipo !== "all"){
-out = out.filter(x => normalizeTipo(x.tipo) === filtroTipo);
-}
-if(filtro === "ativos") out = out.filter(x => Number(x.ativo) === 1);
-if(filtro === "inativos") out = out.filter(x => Number(x.ativo) === 0);
-if(filtro === "online") out = out.filter(x => x.last_status === "ONLINE");
-if(filtro === "offline") out = out.filter(x => x.last_status === "OFFLINE");
-if(filtro === "offline_ativos") out = out.filter(x => Number(x.ativo)===1 && x.last_status==="OFFLINE");
-if(filtro === "unknown") out = out.filter(x => x.last_status !== "ONLINE" && x.last_status !== "OFFLINE");
-if(filtro === "slow") out = out.filter(x => x.last_status==="ONLINE" && x.last_tempo!=null && Number(x.last_tempo) >= slowMs);
-const statusRank = (x) => {
-const ativo = Number(x.ativo)===1;
-const s = x.last_status;
-if(s==="OFFLINE" && ativo) return 0;
-if(s==="OFFLINE" && !ativo) return 1;
-if(s!=="ONLINE" && s!=="OFFLINE") return 2;
-return 3;
-};
-if(ordem === "nome"){
-out.sort((a,b)=> (a.nome||"").localeCompare(b.nome||""));
-} else if(ordem === "tempo"){
-out.sort((a,b)=> (Number(a.last_tempo)||0) - (Number(b.last_tempo)||0));
-} else if(ordem === "queda"){
-out.sort((a,b)=>{
-const da = parseSqliteDateToUTC(a.last_data)?.getTime() ?? 0;
-const db = parseSqliteDateToUTC(b.last_data)?.getTime() ?? 0;
-return db - da;
-});
-} else {
-out.sort((a,b)=> statusRank(a) - statusRank(b));
-}
-$("countHint").textContent = `${out.length} serviço(s)`;
-$("countDot").className = "dot " + (
-out.some(x=>Number(x.ativo)===1 && x.last_status==="OFFLINE") ? "bad" :
-out.some(x=>x.last_status==="ONLINE") ? "ok" : ""
-);
-return out;
-}
+
 // ===== Render Monitor =====
 function buildCard(item){
-const ativo = Number(item.ativo)===1;
-const status = item.last_status || "UNKNOWN";
-const tempo = item.last_tempo == null ? null : Number(item.last_tempo);
-const dt = item.last_data ? formatBRFromSqlite(item.last_data) : "—";
-const metodo = metodoLabel(item);
-const detalhe = item.last_detalhe ? String(item.last_detalhe) : (status==="OFFLINE" ? "Sem detalhe informado" : "—");
-const tagClass = statusTag(status);
-const isSel = Number(state.selectedId) === Number(item.id);
-const heat = tempo==null ? 0 : heatWidthMs(tempo);
-const tipo = normalizeTipo(item.tipo || item.type_name);
-let sinceTxt = "—";
-if(status==="OFFLINE" && item.last_data){
-const d = parseSqliteDateToUTC(item.last_data);
-if(d) sinceTxt = msToHuman(Date.now() - d.getTime());
+  const ativo = Number(item.ativo)===1;
+  const status = item.last_status || "UNKNOWN";
+  const tempo = item.last_tempo == null ? null : Number(item.last_tempo);
+  const dt = item.last_data ? formatBRFromSqlite(item.last_data) : "—";
+  const metodo = metodoLabel(item);
+  const detalhe = item.last_detalhe ? String(item.last_detalhe) : (status==="OFFLINE" ? "Sem detalhe informado" : "—");
+  const tagClass = statusTag(status);
+  const isSel = Number(state.selectedId) === Number(item.id);
+  const heat = tempo==null ? 0 : heatWidthMs(tempo);
+  const tipo = normalizeTipo(item.tipo || item.type_name);
+  let sinceTxt = "—";
+  if(status==="OFFLINE" && item.last_data){
+    const d = parseSqliteDateToUTC(item.last_data);
+    if(d) sinceTxt = msToHuman(Date.now() - d.getTime());
+  }
+  const div = document.createElement("div");
+  div.className = "svc" + (isSel ? " sel" : "") + ((ativo && status==="OFFLINE") ? " offline" : "");
+  div.title = "Clique para selecionar (fixa no gráfico)";
+  div.onclick = (e)=>{
+    if(e.target?.closest?.("button")) return;
+    selecionarApiUser(Number(item.id));
+  };
+  div.innerHTML = `
+  <div class="svc-top">
+    <div class="svc-title">
+      <div class="svc-name">
+        ${escapeHtml(item.nome || "Sem nome")}
+        <span class="tag type">🧩 ${escapeHtml(tipo)}</span>
+        <span class="tag ${tagClass}">
+          <span class="dot ${tagClass==="ok"?"ok":tagClass==="bad"?"bad":""}"></span>${statusLabel(status)}
+        </span>
+        ${ativo ? `<span class="tag ok">MONITOR ON</span>` : `<span class="tag off">MONITOR OFF</span>`}
+        ${status==="OFFLINE" ? `<span class="tag bad" title="Tempo em queda">↓ ${escapeHtml(sinceTxt)}</span>` : ``}
+      </div>
+      <div class="svc-url" title="${escapeAttr(item.url || "")}">${escapeHtml(item.url || "—")}</div>
+    </div>
+  </div>
+  <div class="svc-mid">
+    <div class="kv">
+      <div class="k">Método</div>
+      <div class="v">${escapeHtml(metodo)}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Último tempo</div>
+      <div class="v">${tempo==null ? "—" : (tempo + " ms")}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Última atualização</div>
+      <div class="v">${escapeHtml(dt)}</div>
+    </div>
+    <div class="kv">
+      <div class="k">Extras</div>
+      <div class="v">
+        ${item.timeout_ms ? `timeout ${escapeHtml(String(item.timeout_ms))}ms` : "timeout —"}
+        ${String(item.metodo||"").toUpperCase()==="TCP" && item.porta ? ` • porta ${escapeHtml(String(item.porta))}` : ""}
+        ${item.headers_json && String(item.headers_json).trim() ? " • headers" : ""}
+      </div>
+    </div>
+  </div>
+  <div class="heat" title="Heat de latência (0–6000ms)">
+    <span style="width:${heat}%"></span>
+  </div>
+  <div class="svc-detail">
+    <span class="mini-dot ${tagClass==="ok"?"ok":tagClass==="bad"?"bad":""}"></span>
+    <div><strong>Detalhe:</strong> ${escapeHtml(detalhe)}</div>
+  </div>
+  <div class="svc-actions">
+    <div class="actions-left">
+      <button class="btn btn-ok" data-sel="${item.id}">Selecionar</button>
+      <button class="btn" data-open="${item.id}">Abrir</button>
+      <button class="btn" data-copy="${item.id}">Copiar URL/IP</button>
+    </div>
+    <div class="actions-right">
+      <button class="btn" data-edit="${item.id}">Editar</button>
+      <button class="btn btn-danger" data-del="${item.id}">Excluir</button>
+    </div>
+  </div>
+  `;
+  div.querySelector("[data-sel]").onclick = (e)=>{ e.stopPropagation(); selecionarApiUser(Number(item.id)); };
+  div.querySelector("[data-open]").onclick = (e)=>{
+    e.stopPropagation();
+    const url = String(item.url||"").trim();
+    if(!url) return;
+    if(/^https?:\/\//i.test(url)) window.open(url, "_blank", "noopener,noreferrer");
+    else alert("URL não é http(s). Para IP/host, use copiar.");
+  };
+  div.querySelector("[data-copy]").onclick = async (e)=>{
+    e.stopPropagation();
+    try{
+      await navigator.clipboard.writeText(String(item.url||"").trim());
+      toast("Copiado ✅");
+    }catch{
+      alert("Não consegui copiar (permissão do navegador).");
+    }
+  };
+  div.querySelector("[data-edit]").onclick = (e)=>{ e.stopPropagation(); editarApi(Number(item.id)); };
+  div.querySelector("[data-del]").onclick = (e)=>{ e.stopPropagation(); excluirApi(Number(item.id)); };
+  return div;
 }
-const div = document.createElement("div");
-div.className = "svc" + (isSel ? " sel" : "") + ((ativo && status==="OFFLINE") ? " offline" : "");
-div.title = "Clique para selecionar (fixa no gráfico)";
-div.onclick = (e)=>{
-if(e.target?.closest?.("button")) return;
-selecionarApiUser(Number(item.id));
-};
-div.innerHTML = `
-<div class="svc-top">
-<div class="svc-title">
-<div class="svc-name">
-${escapeHtml(item.nome || "Sem nome")}
-<span class="tag type">🧩 ${escapeHtml(tipo)}</span>
-<span class="tag ${tagClass}">
-<span class="dot ${tagClass==="ok"?"ok":tagClass==="bad"?"bad":""}"></span>${statusLabel(status)}
-</span>
-${ativo ? `<span class="tag ok">MONITOR ON</span>` : `<span class="tag off">MONITOR OFF</span>`}
-${status==="OFFLINE" ? `<span class="tag bad" title="Tempo em queda">↓ ${escapeHtml(sinceTxt)}</span>` : ``}
-</div>
-<div class="svc-url" title="${escapeAttr(item.url || "")}">${escapeHtml(item.url || "—")}</div>
-</div>
-</div>
-<div class="svc-mid">
-<div class="kv">
-<div class="k">Método</div>
-<div class="v">${escapeHtml(metodo)}</div>
-</div>
-<div class="kv">
-<div class="k">Último tempo</div>
-<div class="v">${tempo==null ? "—" : (tempo + " ms")}</div>
-</div>
-<div class="kv">
-<div class="k">Última atualização</div>
-<div class="v">${escapeHtml(dt)}</div>
-</div>
-<div class="kv">
-<div class="k">Extras</div>
-<div class="v">
-${item.timeout_ms ? `timeout ${escapeHtml(String(item.timeout_ms))}ms` : "timeout —"}
-${String(item.metodo||"").toUpperCase()==="TCP" && item.porta ? ` • porta ${escapeHtml(String(item.porta))}` : ""}
-${item.headers_json && String(item.headers_json).trim() ? " • headers" : ""}
-</div>
-</div>
-</div>
-<div class="heat" title="Heat de latência (0–6000ms)">
-<span style="width:${heat}%"></span>
-</div>
-<div class="svc-detail">
-<span class="mini-dot ${tagClass==="ok"?"ok":tagClass==="bad"?"bad":""}"></span>
-<div><strong>Detalhe:</strong> ${escapeHtml(detalhe)}</div>
-</div>
-<div class="svc-actions">
-<div class="actions-left">
-<button class="btn btn-ok" data-sel="${item.id}">Selecionar</button>
-<button class="btn" data-open="${item.id}">Abrir</button>
-<button class="btn" data-copy="${item.id}">Copiar URL/IP</button>
-</div>
-<div class="actions-right">
-<button class="btn" data-edit="${item.id}">Editar</button>
-<button class="btn btn-danger" data-del="${item.id}">Excluir</button>
-</div>
-</div>
-`;
-div.querySelector("[data-sel]").onclick = (e)=>{ e.stopPropagation(); selecionarApiUser(Number(item.id)); };
-div.querySelector("[data-open]").onclick = (e)=>{
-e.stopPropagation();
-const url = String(item.url||"").trim();
-if(!url) return;
-if(/^https?:\/\//i.test(url)) window.open(url, "_blank", "noopener,noreferrer");
-else alert("URL não é http(s). Para IP/host, use copiar.");
-};
-div.querySelector("[data-copy]").onclick = async (e)=>{
-e.stopPropagation();
-try{
-await navigator.clipboard.writeText(String(item.url||"").trim());
-toast("Copiado ✅");
-}catch{
-alert("Não consegui copiar (permissão do navegador).");
-}
-};
-div.querySelector("[data-edit]").onclick = (e)=>{ e.stopPropagation(); editarApi(Number(item.id)); };
-div.querySelector("[data-del]").onclick = (e)=>{ e.stopPropagation(); excluirApi(Number(item.id)); };
-return div;
-}
+
 function renderCards(data){
-const root = $("cards");
-root.innerHTML = "";
-const groupOn = $("groupByTipo")?.checked;
-if(!groupOn){
-data.forEach(item => root.appendChild(buildCard(item)));
-return;
+  const root = $("cards");
+  root.innerHTML = "";
+  const groupOn = $("groupByTipo")?.checked;
+  if(!groupOn){
+    data.forEach(item => root.appendChild(buildCard(item)));
+    return;
+  }
+  const groups = new Map();
+  data.forEach(item=>{
+    const tipo = normalizeTipo(item.tipo || item.type_name);
+    if(!groups.has(tipo)) groups.set(tipo, []);
+    groups.get(tipo).push(item);
+  });
+  const tipos = Array.from(groups.keys()).sort((a,b)=> a.localeCompare(b));
+  tipos.forEach(tipo=>{
+    const header = document.createElement("div");
+    header.className = "inc-card";
+    header.style.gridColumn = "1 / -1";
+    header.style.background = "rgba(255,255,255,.03)";
+    header.style.boxShadow = "none";
+    header.innerHTML = `
+    <div class="hrow">
+      <div>
+        <h2>${escapeHtml(tipo)}</h2>
+        <div class="muted">${groups.get(tipo).length} item(ns)</div>
+      </div>
+    </div>
+    `;
+    root.appendChild(header);
+    groups.get(tipo).forEach(item => root.appendChild(buildCard(item)));
+  });
 }
-const groups = new Map();
-data.forEach(item=>{
-const tipo = normalizeTipo(item.tipo || item.type_name);
-if(!groups.has(tipo)) groups.set(tipo, []);
-groups.get(tipo).push(item);
-});
-const tipos = Array.from(groups.keys()).sort((a,b)=> a.localeCompare(b));
-tipos.forEach(tipo=>{
-const header = document.createElement("div");
-header.className = "inc-card";
-header.style.gridColumn = "1 / -1";
-header.style.background = "rgba(255,255,255,.03)";
-header.style.boxShadow = "none";
-header.innerHTML = `
-<div class="hrow">
-<div>
-<h2>${escapeHtml(tipo)}</h2>
-<div class="muted">${groups.get(tipo).length} item(ns)</div>
-</div>
-</div>
-`;
-root.appendChild(header);
-groups.get(tipo).forEach(item => root.appendChild(buildCard(item)));
-});
-}
+
 function renderIncidentPanels(data){
-const offAtivos = data
-.filter(x=> Number(x.ativo)===1 && x.last_status==="OFFLINE")
-.slice()
-.sort((a,b)=>{
-const da = parseSqliteDateToUTC(a.last_data)?.getTime() ?? 0;
-const db = parseSqliteDateToUTC(b.last_data)?.getTime() ?? 0;
-return db - da;
-});
-$("incCount").textContent = offAtivos.length;
-const incList = $("incList");
-incList.innerHTML = "";
-offAtivos.slice(0, 12).forEach(x=>{
-const el = document.createElement("div");
-el.className = "inc-item";
-el.onclick = ()=> selecionarApiUser(Number(x.id));
-const since = x.last_data ? msToHuman(Date.now() - (parseSqliteDateToUTC(x.last_data)?.getTime() ?? Date.now())) : "—";
-el.innerHTML = `
-<div style="min-width:0">
-<strong>${escapeHtml(x.nome||"—")}</strong>
-<div class="meta">${escapeHtml(normalizeTipo(x.tipo))} • ${escapeHtml(x.url||"—")}</div>
-</div>
-<div style="text-align:right">
-<span class="tag bad">OFFLINE</span>
-<div class="meta">${x.last_data ? escapeHtml(formatBRFromSqlite(x.last_data)) : "—"} • ↓ ${escapeHtml(since)}</div>
-</div>
-`;
-incList.appendChild(el);
-});
-const slow = data
-.filter(x=> x.last_status==="ONLINE" && x.last_tempo!=null)
-.slice()
-.sort((a,b)=> Number(b.last_tempo||0) - Number(a.last_tempo||0))
-.slice(0, 6);
-$("slowCount").textContent = slow.length;
-const slowList = $("slowList");
-slowList.innerHTML = "";
-slow.forEach(x=>{
-const el = document.createElement("div");
-el.className = "inc-item";
-el.onclick = ()=> selecionarApiUser(Number(x.id));
-el.innerHTML = `
-<div style="min-width:0">
-<strong>${escapeHtml(x.nome||"—")}</strong>
-<div class="meta">${escapeHtml(normalizeTipo(x.tipo))} • ${escapeHtml(x.url||"—")}</div>
-</div>
-<div style="text-align:right">
-<span class="tag warn">${escapeHtml(String(x.last_tempo))} ms</span>
-<div class="meta">${x.last_data ? escapeHtml(formatBRFromSqlite(x.last_data)) : "—"}</div>
-</div>
-`;
-slowList.appendChild(el);
-});
-const banner = $("banner");
-if(offAtivos.length > 0){
-banner.classList.add("show");
-$("bannerTitle").textContent = `${offAtivos.length} serviço(s) ATIVO(s) OFFLINE`;
-$("bannerDesc").textContent = `Prioridade: ${offAtivos[0]?.nome || "—"} • clique para fixar`;
-}else{
-banner.classList.remove("show");
+  const offAtivos = data
+    .filter(x=> Number(x.ativo)===1 && x.last_status==="OFFLINE")
+    .slice()
+    .sort((a,b)=>{
+      const da = parseSqliteDateToUTC(a.last_data)?.getTime() ?? 0;
+      const db = parseSqliteDateToUTC(b.last_data)?.getTime() ?? 0;
+      return db - da;
+    });
+
+  $("incCount").textContent = offAtivos.length;
+  const incList = $("incList");
+  incList.innerHTML = "";
+  offAtivos.slice(0, 12).forEach(x=>{
+    const el = document.createElement("div");
+    el.className = "inc-item";
+    el.onclick = ()=> selecionarApiUser(Number(x.id));
+    const since = x.last_data ? msToHuman(Date.now() - (parseSqliteDateToUTC(x.last_data)?.getTime() ?? Date.now())) : "—";
+    el.innerHTML = `
+    <div style="min-width:0">
+      <strong>${escapeHtml(x.nome||"—")}</strong>
+      <div class="meta">${escapeHtml(normalizeTipo(x.tipo))} • ${escapeHtml(x.url||"—")}</div>
+    </div>
+    <div style="text-align:right">
+      <span class="tag bad">OFFLINE</span>
+      <div class="meta">${x.last_data ? escapeHtml(formatBRFromSqlite(x.last_data)) : "—"} • ↓ ${escapeHtml(since)}</div>
+    </div>
+    `;
+    incList.appendChild(el);
+  });
+
+  const slow = data
+    .filter(x=> x.last_status==="ONLINE" && x.last_tempo!=null)
+    .slice()
+    .sort((a,b)=> Number(b.last_tempo||0) - Number(a.last_tempo||0))
+    .slice(0, 6);
+
+  $("slowCount").textContent = slow.length;
+  const slowList = $("slowList");
+  slowList.innerHTML = "";
+  slow.forEach(x=>{
+    const el = document.createElement("div");
+    el.className = "inc-item";
+    el.onclick = ()=> selecionarApiUser(Number(x.id));
+    el.innerHTML = `
+    <div style="min-width:0">
+      <strong>${escapeHtml(x.nome||"—")}</strong>
+      <div class="meta">${escapeHtml(normalizeTipo(x.tipo))} • ${escapeHtml(x.url||"—")}</div>
+    </div>
+    <div style="text-align:right">
+      <span class="tag warn">${escapeHtml(String(x.last_tempo))} ms</span>
+      <div class="meta">${x.last_data ? escapeHtml(formatBRFromSqlite(x.last_data)) : "—"}</div>
+    </div>
+    `;
+    slowList.appendChild(el);
+  });
+
+  const banner = $("banner");
+  if(offAtivos.length > 0){
+    banner.classList.add("show");
+    $("bannerTitle").textContent = `${offAtivos.length} serviço(s) ATIVO(s) OFFLINE`;
+    $("bannerDesc").textContent = `Prioridade: ${offAtivos[0]?.nome || "—"} • clique para fixar`;
+  }else{
+    banner.classList.remove("show");
+  }
+
+  const currentOfflineIds = new Set(offAtivos.map(x=> String(x.id)));
+  let newDown = false;
+  for(const id of currentOfflineIds){
+    if(!state.lastOfflineSet.has(id)) { newDown = true; break; }
+  }
+  state.lastOfflineSet = currentOfflineIds;
+  if(newDown && !state.muted){
+    beep();
+  }
 }
-const currentOfflineIds = new Set(offAtivos.map(x=> String(x.id)));
-let newDown = false;
-for(const id of currentOfflineIds){
-if(!state.lastOfflineSet.has(id)) { newDown = true; break; }
-}
-state.lastOfflineSet = currentOfflineIds;
-if(newDown && !state.muted){
-beep();
-}
-}
+
 // ===== Seleção / Política =====
 async function applySelectionPolicy(){
-if(state.pinnedByUser && state.pinnedId != null){
-setPinBadge("FIXO");
-$("chartHint").textContent = `Modo: Fixo (seleção do usuário) • Threshold: ${currentThreshold}ms`;
-await selecionarApiInternal(state.pinnedId, { forceLogs:true });
-return;
+  if(state.pinnedByUser && state.pinnedId != null){
+    setPinBadge("FIXO");
+    $("chartHint").textContent = `Modo: Fixo (seleção do usuário) • Threshold: ${currentThreshold}ms`;
+    await selecionarApiInternal(state.pinnedId, { forceLogs:true });
+    return;
+  }
+  const off = getActiveOfflineListSorted();
+  if(off.length){
+    state.pinnedId = Number(off[0].id);
+    setPinBadge("OFFLINE");
+    $("chartHint").textContent = `Modo: OFFLINE (fixo enquanto houver queda) • Threshold: ${currentThreshold}ms`;
+    syncRotationIndexToCurrent(state.pinnedId);
+    await selecionarApiInternal(state.pinnedId, { forceLogs:true });
+    return;
+  }
+  setPinBadge("AUTO");
+  setAutoHint();
+  if(state.pinnedId == null){
+    state.pinnedId = pickNextServiceIdForRotation();
+  }
+  if(state.pinnedId != null){
+    syncRotationIndexToCurrent(state.pinnedId);
+    await selecionarApiInternal(state.pinnedId, { forceLogs:false });
+  }
 }
-const off = getActiveOfflineListSorted();
-if(off.length){
-state.pinnedId = Number(off[0].id);
-setPinBadge("OFFLINE");
-$("chartHint").textContent = `Modo: OFFLINE (fixo enquanto houver queda) • Threshold: ${currentThreshold}ms`;
-syncRotationIndexToCurrent(state.pinnedId);
-await selecionarApiInternal(state.pinnedId, { forceLogs:true });
-return;
-}
-setPinBadge("AUTO");
-setAutoHint();
-if(state.pinnedId == null){
-state.pinnedId = pickNextServiceIdForRotation();
-}
-if(state.pinnedId != null){
-syncRotationIndexToCurrent(state.pinnedId);
-await selecionarApiInternal(state.pinnedId, { forceLogs:false });
-}
-}
+
 function startRotation(){
-if(state.timers.rotation) clearInterval(state.timers.rotation);
-state.timers.rotation = setInterval(async ()=>{
-if(state.pinnedByUser) return;
-if(getActiveOfflineListSorted().length) return;
-const nextId = pickNextServiceIdForRotation();
-if(nextId != null){
-state.pinnedId = nextId;
-setPinBadge("AUTO");
-setAutoHint();
-await selecionarApiInternal(nextId, { forceLogs:true });
+  if(state.timers.rotation) clearInterval(state.timers.rotation);
+  state.timers.rotation = setInterval(async ()=>{
+    if(state.pinnedByUser) return;
+    if(getActiveOfflineListSorted().length) return;
+    const nextId = pickNextServiceIdForRotation();
+    if(nextId != null){
+      state.pinnedId = nextId;
+      setPinBadge("AUTO");
+      setAutoHint();
+      await selecionarApiInternal(nextId, { forceLogs:true });
+    }
+  }, ROTATION_INTERVAL_MS);
 }
-}, ROTATION_INTERVAL_MS);
-}
+
 async function forceNextService(){
-const off = getActiveOfflineListSorted();
-if(off.length){
-alert("Existe serviço ATIVO OFFLINE. O sistema fica fixo no incidente até normalizar.");
-return;
+  const off = getActiveOfflineListSorted();
+  if(off.length){
+    alert("Existe serviço ATIVO OFFLINE. O sistema fica fixo no incidente até normalizar.");
+    return;
+  }
+  if(state.pinnedByUser){
+    const ok = confirm("Você está no modo FIXO (usuário). Deseja desfazer o fixo e TROCAR para o próximo serviço?");
+    if(!ok) return;
+    state.pinnedByUser = false;
+    setPinBadge("AUTO");
+  }
+  const nextId = pickNextServiceIdForRotation();
+  if(nextId == null){
+    alert("Nenhum serviço disponível para trocar.");
+    return;
+  }
+  state.pinnedId = nextId;
+  setAutoHint();
+  await selecionarApiInternal(nextId, { forceLogs:true });
 }
-if(state.pinnedByUser){
-const ok = confirm("Você está no modo FIXO (usuário). Deseja desfazer o fixo e TROCAR para o próximo serviço?");
-if(!ok) return;
-state.pinnedByUser = false;
-setPinBadge("AUTO");
-}
-const nextId = pickNextServiceIdForRotation();
-if(nextId == null){
-alert("Nenhum serviço disponível para trocar.");
-return;
-}
-state.pinnedId = nextId;
-setAutoHint();
-await selecionarApiInternal(nextId, { forceLogs:true });
-}
+
 // ===== Detalhes + Logs =====
 function preencherDetalhes(item){
-$("dNome").textContent = item.nome || "—";
-$("dUrl").textContent = item.url || "—";
-$("dMetodo").textContent = `Método: ${metodoLabel(item)}`;
-$("dTipo").textContent = `Tipo: ${normalizeTipo(item.tipo || item.type_name)}`;
-const st = item.last_status || "—";
-$("dStatus").textContent = st;
-$("dQuando").textContent = item.last_data ? formatBRFromSqlite(item.last_data) : "—";
-$("dTempo").textContent = item.last_tempo == null ? "—" : item.last_tempo;
-$("dAtivo").textContent = Number(item.ativo) === 1 ? "SIM" : "NÃO";
-$("dDetalhe").textContent = item.last_detalhe ? item.last_detalhe : "—";
-if(st === "OFFLINE" && item.last_data){
-const d = parseSqliteDateToUTC(item.last_data);
-$("dDesde").textContent = d ? `Em queda há: ${msToHuman(Date.now() - d.getTime())}` : "Em queda há: —";
-$("dAbaixo").textContent = "";
-} else {
-$("dDesde").textContent = "";
-$("dAbaixo").textContent = "";
+  $("dNome").textContent = item.nome || "—";
+  $("dUrl").textContent = item.url || "—";
+  $("dMetodo").textContent = `Método: ${metodoLabel(item)}`;
+  $("dTipo").textContent = `Tipo: ${normalizeTipo(item.tipo || item.type_name)}`;
+  const st = item.last_status || "—";
+  $("dStatus").textContent = st;
+  $("dQuando").textContent = item.last_data ? formatBRFromSqlite(item.last_data) : "—";
+  $("dTempo").textContent = item.last_tempo == null ? "—" : item.last_tempo;
+  $("dAtivo").textContent = Number(item.ativo) === 1 ? "SIM" : "NÃO";
+  $("dDetalhe").textContent = item.last_detalhe ? item.last_detalhe : "—";
+  if(st === "OFFLINE" && item.last_data){
+    const d = parseSqliteDateToUTC(item.last_data);
+    $("dDesde").textContent = d ? `Em queda há: ${msToHuman(Date.now() - d.getTime())}` : "Em queda há: —";
+    $("dAbaixo").textContent = "";
+  } else {
+    $("dDesde").textContent = "";
+    $("dAbaixo").textContent = "";
+  }
 }
-}
+
 async function selecionarApiUser(id){
-state.pinnedId = Number(id);
-state.pinnedByUser = true;
-setPinBadge("FIXO");
-$("chartHint").textContent = `Modo: Fixo (seleção do usuário) • Threshold: ${currentThreshold}ms`;
-syncRotationIndexToCurrent(state.pinnedId);
-await selecionarApiInternal(id, { forceLogs:true });
+  state.pinnedId = Number(id);
+  state.pinnedByUser = true;
+  setPinBadge("FIXO");
+  $("chartHint").textContent = `Modo: Fixo (seleção do usuário) • Threshold: ${currentThreshold}ms`;
+  syncRotationIndexToCurrent(state.pinnedId);
+  await selecionarApiInternal(id, { forceLogs:true });
 }
+
 async function selecionarApiInternal(id, { forceLogs=false } = {}){
-id = Number(id);
-const item = state.apis.find(x=> Number(x.id) === id);
-if(!item) return;
-const changed = Number(state.selectedId) !== id;
-state.selectedId = id;
-preencherDetalhes(item);
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
-await refreshLogsForSelected({ force: forceLogs || changed });
+  id = Number(id);
+  const item = state.apis.find(x=> Number(x.id) === id);
+  if(!item) return;
+  const changed = Number(state.selectedId) !== id;
+  state.selectedId = id;
+  preencherDetalhes(item);
+  renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  await refreshLogsForSelected({ force: forceLogs || changed });
 }
+
 function hashLogs(logs){
-if(!logs?.length) return "0";
-const first = logs[0];
-const last = logs[logs.length-1];
-return `${logs.length}|${first?.id ?? ""}|${first?.data ?? ""}|${last?.id ?? ""}|${last?.data ?? ""}`;
+  if(!logs?.length) return "0";
+  const first = logs[0];
+  const last = logs[logs.length-1];
+  return `${logs.length}|${first?.id ?? ""}|${first?.data ?? ""}|${last?.id ?? ""}|${last?.data ?? ""}`;
 }
+
 async function refreshLogsForSelected({ force=false } = {}){
-const id = Number(state.selectedId);
-if(!id) return;
-const cached = state.logsCache.get(id);
-const nowTs = Date.now();
-if(!force && cached?.lastFetchAt && (nowTs - cached.lastFetchAt) < (LOGS_INTERVAL_MS - 2000)){
-updateChart(cached.labels, cached.tempos);
-return;
+  const id = Number(state.selectedId);
+  if(!id) return;
+  const cached = state.logsCache.get(id);
+  const nowTs = Date.now();
+  if(!force && cached?.lastFetchAt && (nowTs - cached.lastFetchAt) < (LOGS_INTERVAL_MS - 2000)){
+    updateChart(cached.labels, cached.tempos);
+    return;
+  }
+  try{
+    const logs = await fetchJson(`/api/logs?api_id=${id}&limit=${LOG_LIMIT}`, {}, "logs");
+    const list = logs.slice().reverse();
+    const h = hashLogs(list);
+    if(!force && cached?.lastHash === h){
+      cached.lastFetchAt = nowTs;
+      state.logsCache.set(id, cached);
+      return;
+    }
+    const labels = list.map((_, i)=> i+1);
+    const tempos = list.map(x=> Number(x.tempo||0));
+    const cut = Math.max(0, tempos.length - MAX_POINTS_CHART);
+    const labelsCut = labels.slice(cut);
+    const temposCut = tempos.slice(cut);
+    state.logsCache.set(id, {
+      lastFetchAt: nowTs,
+      labels: labelsCut,
+      tempos: temposCut,
+      lastHash: h
+    });
+    updateChart(labelsCut, temposCut);
+  } catch(e){
+    $("chartHint").textContent = `Logs indisponíveis (mantendo último gráfico) • Threshold: ${currentThreshold}ms`;
+  }
 }
-try{
-const logs = await fetchJson(`/api/logs?api_id=${id}&limit=${LOG_LIMIT}`, {}, "logs");
-const list = logs.slice().reverse();
-const h = hashLogs(list);
-if(!force && cached?.lastHash === h){
-cached.lastFetchAt = nowTs;
-state.logsCache.set(id, cached);
-return;
-}
-const labels = list.map((_, i)=> i+1);
-const tempos = list.map(x=> Number(x.tempo||0));
-const cut = Math.max(0, tempos.length - MAX_POINTS_CHART);
-const labelsCut = labels.slice(cut);
-const temposCut = tempos.slice(cut);
-state.logsCache.set(id, {
-lastFetchAt: nowTs,
-labels: labelsCut,
-tempos: temposCut,
-lastHash: h
-});
-updateChart(labelsCut, temposCut);
-} catch(e){
-$("chartHint").textContent = `Logs indisponíveis (mantendo último gráfico) • Threshold: ${currentThreshold}ms`;
-}
-}
+
 async function loadApisIntoReportSelect(){
-try{
-const sel = $("repApi");
-if(!sel) return;
-const cur = sel.value || "";
-sel.innerHTML = '<option value="">Todos</option>';
-(state.apis || []).forEach(a=>{
-const o = document.createElement("option");
-o.value = String(a.id);
-o.textContent = `${a.name} (#${a.id})`;
-sel.appendChild(o);
-});
-if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
-} catch(e){
-console.warn("loadApisIntoReportSelect falhou", e);
+  try{
+    const selApi = $("repApi");
+    const selTipo = $("repTipo");
+    if(!selApi || !selTipo) return;
+
+    const curApi = selApi.value || "";
+    const curTipo = selTipo.value || "";
+
+    selApi.innerHTML = '<option value="">Serviço: Todos</option>';
+    selTipo.innerHTML = '<option value="">Tipo: Todos</option>';
+
+    (state.apis || []).forEach(a=>{
+      const o = document.createElement("option");
+      o.value = String(a.id);
+      o.textContent = `${a.nome || "Sem nome"} (#${a.id})`;
+      selApi.appendChild(o);
+    });
+
+    const tipos = Array.from(
+      new Set((state.apis || []).map(a => normalizeTipo(a.tipo || a.type_name)))
+    ).sort((a,b)=> a.localeCompare(b, "pt-BR"));
+
+    tipos.forEach(t=>{
+      const o = document.createElement("option");
+      o.value = t;
+      o.textContent = t;
+      selTipo.appendChild(o);
+    });
+
+    if([...selApi.options].some(o=>o.value===curApi)) selApi.value = curApi;
+    if([...selTipo.options].some(o=>o.value===curTipo)) selTipo.value = curTipo;
+  } catch(e){
+    console.warn("loadApisIntoReportSelect falhou", e);
+  }
 }
-}
+
 // ===== Summary refresh =====
 async function refreshSummary(){
-try{
-const data = await fetchJson("/api/summary", {}, "summary");
-state.apis = data;
-populateTipoFilter();
-atualizarResumo(data);
-renderIncidentPanels(data);
-renderCards(aplicarFiltrosEOrdenacao(data));
-state.lastSummaryOkAt = new Date();
-showStale();
-try{ await applySelectionPolicy(); } catch(e){ console.warn("applySelectionPolicy falhou", e); }
-try{ await loadApisIntoReportSelect(); } catch(e){ console.warn("loadApisIntoReportSelect falhou", e); }
-clearGlobal();
-} catch(e){
-state.lastSummaryErrAt = new Date();
-showStale();
-setGlobal("bad","Falha ao carregar dados");
+  try{
+    const data = await fetchJson("/api/summary", {}, "summary");
+    state.apis = data;
+    populateTipoFilter();
+    atualizarResumo(data);
+    renderIncidentPanels(data);
+    renderCards(aplicarFiltrosEOrdenacao(data));
+    state.lastSummaryOkAt = new Date();
+    showStale();
+    try{ await applySelectionPolicy(); } catch(e){ console.warn("applySelectionPolicy falhou", e); }
+    try{ await loadApisIntoReportSelect(); } catch(e){ console.warn("loadApisIntoReportSelect falhou", e); }
+    clearGlobal();
+  } catch(e){
+    state.lastSummaryErrAt = new Date();
+    showStale();
+    setGlobal("bad","Falha ao carregar dados");
+  }
 }
-}
+
 // ===== CRUD =====
 function mostrarCamposPorMetodo(){
-const m = $("metodo").value.toUpperCase();
-$("porta").style.display = (m === "TCP") ? "block" : "none";
-if(m !== "TCP") $("porta").value = "";
-$("xmlWrap").style.display = (m === "POST") ? "block" : "none";
-if(m !== "POST") $("xml").value = "";
+  const m = $("metodo").value.toUpperCase();
+  $("porta").style.display = (m === "TCP") ? "block" : "none";
+  if(m !== "TCP") $("porta").value = "";
+  $("xmlWrap").style.display = (m === "POST") ? "block" : "none";
+  if(m !== "POST") $("xml").value = "";
 }
+
 async function editarApi(id){
-const apis = await fetchJson("/api/apis", {}, "apisList");
-const api = apis.find(x=> Number(x.id) === Number(id));
-if(!api) return;
-$("formMode").textContent = "Modo: Editar";
-$("btnExcluir").disabled = false;
-$("id").value = api.id;
-$("nome").value = api.nome || "";
-$("tipo").value = normalizeTipo(api.tipo || api.type_name);
-$("url").value = api.url || "";
-$("metodo").value = (api.metodo || "GET").toUpperCase();
-$("headers_json").value = api.headers_json || "";
-$("xml").value = api.xml || "";
-$("porta").value = api.porta != null ? String(api.porta) : "";
-$("ativo").value = String(api.ativo ?? 1);
-$("timeout_ms").value = String(api.timeout_ms ?? 5000);
-$("interval_ms").value = String(api.interval_ms ?? api.default_interval_ms ?? 3000);
-$("adaptive_enabled").checked = Number(api.adaptive_enabled ?? 1) === 1;
-mostrarCamposPorMetodo();
-window.scrollTo({ top: document.body.scrollHeight, behavior:"smooth" });
+  const apis = await fetchJson("/api/apis", {}, "apisList");
+  const api = apis.find(x=> Number(x.id) === Number(id));
+  if(!api) return;
+  $("formMode").textContent = "Modo: Editar";
+  $("btnExcluir").disabled = false;
+  $("id").value = api.id;
+  $("nome").value = api.nome || "";
+  $("tipo").value = normalizeTipo(api.tipo || api.type_name);
+  $("url").value = api.url || "";
+  $("metodo").value = (api.metodo || "GET").toUpperCase();
+  $("headers_json").value = api.headers_json || "";
+  $("xml").value = api.xml || "";
+  $("porta").value = api.porta != null ? String(api.porta) : "";
+  $("ativo").value = String(api.ativo ?? 1);
+  $("timeout_ms").value = String(api.timeout_ms ?? 5000);
+  $("interval_ms").value = String(api.interval_ms ?? api.default_interval_ms ?? 3000);
+  $("adaptive_enabled").checked = Number(api.adaptive_enabled ?? 1) === 1;
+  mostrarCamposPorMetodo();
+  window.scrollTo({ top: document.body.scrollHeight, behavior:"smooth" });
 }
+
 async function excluirApi(id){
-if(!confirm("Excluir esse item?")) return;
-await fetchJson(`/api/apis/${id}`, { method:"DELETE" }, "crud");
-if(String(state.pinnedId) === String(id)){
-state.pinnedId = null;
-state.pinnedByUser = false;
-state.selectedId = null;
-setPinBadge("AUTO");
-setAutoHint();
-if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.update(); }
+  if(!confirm("Excluir esse item?")) return;
+  await fetchJson(`/api/apis/${id}`, { method:"DELETE" }, "crud");
+  if(String(state.pinnedId) === String(id)){
+    state.pinnedId = null;
+    state.pinnedByUser = false;
+    state.selectedId = null;
+    setPinBadge("AUTO");
+    setAutoHint();
+    if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.update(); }
+  }
+  await refreshSummary();
 }
-await refreshSummary();
-}
+
 async function salvarApi(){
-const metodo = $("metodo").value.toUpperCase();
-const payload = {
-nome: $("nome").value.trim(),
-tipo: normalizeTipo($("tipo").value),
-url: $("url").value.trim(),
-metodo,
-headers_json: $("headers_json").value.trim(),
-xml: $("xml").value,
-porta: $("porta").value.trim() ? Number($("porta").value.trim()) : null,
-ativo: Number($("ativo").value),
-timeout_ms: Number($("timeout_ms").value || 5000),
-interval_ms: $("interval_ms").value.trim() ? Number($("interval_ms").value.trim()) : null,
-adaptive_enabled: $("adaptive_enabled").checked ? 1 : 0};
-const id = $("id").value ? Number($("id").value) : null;
-if(!payload.nome || !payload.url){
-alert("Nome e URL/IP são obrigatórios.");
-return;
+  const metodo = $("metodo").value.toUpperCase();
+  const payload = {
+    nome: $("nome").value.trim(),
+    tipo: normalizeTipo($("tipo").value),
+    url: $("url").value.trim(),
+    metodo,
+    headers_json: $("headers_json").value.trim(),
+    xml: $("xml").value,
+    porta: $("porta").value.trim() ? Number($("porta").value.trim()) : null,
+    ativo: Number($("ativo").value),
+    timeout_ms: Number($("timeout_ms").value || 5000),
+    interval_ms: $("interval_ms").value.trim() ? Number($("interval_ms").value.trim()) : null,
+    adaptive_enabled: $("adaptive_enabled").checked ? 1 : 0
+  };
+  const id = $("id").value ? Number($("id").value) : null;
+  if(!payload.nome || !payload.url){
+    alert("Nome e URL/IP são obrigatórios.");
+    return;
+  }
+  if(metodo === "TCP"){
+    if(!payload.porta || payload.porta < 1 || payload.porta > 65535){
+      alert("No modo TCP, informe uma porta válida (1-65535).");
+      return;
+    }
+  } else {
+    payload.porta = null;
+  }
+  if(metodo !== "POST") payload.xml = "";
+  if(payload.headers_json){
+    try{ JSON.parse(payload.headers_json); }
+    catch{ alert("Headers JSON inválido."); return; }
+  }
+  if(id){
+    await fetchJson(`/api/apis/${id}`, {
+      method:"PUT",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    }, "crud");
+  } else {
+    await fetchJson(`/api/apis`, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    }, "crud");
+  }
+  limparForm();
+  await refreshSummary();
+  alert("Salvo!");
 }
-if(metodo === "TCP"){
-if(!payload.porta || payload.porta < 1 || payload.porta > 65535){
-alert("No modo TCP, informe uma porta válida (1-65535).");
-return;
-}
-} else {
-payload.porta = null;
-}
-if(metodo !== "POST") payload.xml = "";
-if(payload.headers_json){
-try{ JSON.parse(payload.headers_json); }
-catch{ alert("Headers JSON inválido."); return; }
-}
-if(id){
-await fetchJson(`/api/apis/${id}`, {
-method:"PUT",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify(payload)
-}, "crud");
-} else {
-await fetchJson(`/api/apis`, {
-method:"POST",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify(payload)
-}, "crud");
-}
-limparForm();
-await refreshSummary();
-alert("Salvo!");
-}
+
 function limparForm(){
-$("formMode").textContent = "Modo: Criar";
-$("btnExcluir").disabled = true;
-$("id").value = "";
-$("nome").value = "";
-$("tipo").value = "Servidor";
-$("url").value = "";
-$("metodo").value = "GET";
-$("headers_json").value = "";
-$("xml").value = "";
-$("porta").value = "";
-$("ativo").value = "1";
-$("timeout_ms").value = "5000";
-$("interval_ms").value = "3000";
-$("adaptive_enabled").checked = true;
-mostrarCamposPorMetodo();
+  $("formMode").textContent = "Modo: Criar";
+  $("btnExcluir").disabled = true;
+  $("id").value = "";
+  $("nome").value = "";
+  $("tipo").value = "Servidor";
+  $("url").value = "";
+  $("metodo").value = "GET";
+  $("headers_json").value = "";
+  $("xml").value = "";
+  $("porta").value = "";
+  $("ativo").value = "1";
+  $("timeout_ms").value = "5000";
+  $("interval_ms").value = "3000";
+  $("adaptive_enabled").checked = true;
+  mostrarCamposPorMetodo();
 }
+
 // ===== Auto loops =====
 function startAuto(){
-stopAuto();
-state.timers.summary = setInterval(()=> refreshSummary(), SUMMARY_INTERVAL_MS);
-state.timers.logs = setInterval(()=> refreshLogsForSelected({ force:false }), LOGS_INTERVAL_MS);
+  stopAuto();
+  state.timers.summary = setInterval(()=> refreshSummary(), SUMMARY_INTERVAL_MS);
+  state.timers.logs = setInterval(()=> refreshLogsForSelected({ force:false }), LOGS_INTERVAL_MS);
 }
+
 function stopAuto(){
-if(state.timers.summary) clearInterval(state.timers.summary);
-if(state.timers.logs) clearInterval(state.timers.logs);
-state.timers.summary = null;
-state.timers.logs = null;
+  if(state.timers.summary) clearInterval(state.timers.summary);
+  if(state.timers.logs) clearInterval(state.timers.logs);
+  state.timers.summary = null;
+  state.timers.logs = null;
 }
+
 // ===== Tabs =====
 function showPanel(which){
-const panels = ["panelMonitor","panelReports","panelAlerts"];
-panels.forEach(id => $(id).classList.add("hide"));
-$(which).classList.remove("hide");
-$("btnTabMonitor").classList.toggle("btn-ok", which==="panelMonitor");
-$("btnTabReports").classList.toggle("btn-ok", which==="panelReports");
-$("btnTabAlerts").classList.toggle("btn-ok", which==="panelAlerts");
+  const panels = ["panelMonitor","panelReports","panelAlerts"];
+  panels.forEach(id => $(id).classList.add("hide"));
+  $(which).classList.remove("hide");
+  $("btnTabMonitor").classList.toggle("btn-ok", which==="panelMonitor");
+  $("btnTabReports").classList.toggle("btn-ok", which==="panelReports");
+  $("btnTabAlerts").classList.toggle("btn-ok", which==="panelAlerts");
 }
+
 // ===== RELATÓRIOS =====
 function ymd(d){
-const p = (n)=> String(n).padStart(2,"0");
-return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
+  const p = (n)=> String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
 }
+
 function setRepHint(status, text){
-$("repHint").textContent = text;
-$("repDot").className = "dot " + (status==="ok"?"ok":status==="bad"?"bad":"");
+  $("repHint").textContent = text;
+  $("repDot").className = "dot " + (status==="ok"?"ok":status==="bad"?"bad":"");
 }
-function secToHuman(sec){
-sec = Math.max(0, Math.floor(Number(sec||0)));
-const h = Math.floor(sec/3600);
-const m = Math.floor((sec%3600)/60);
-const s = sec%60;
-if(h>0) return `${h}h ${m}m`;
-if(m>0) return `${m}m ${s}s`;
-return `${s}s`;
+
+function destroyReportCharts(){
+  Object.values(reportCharts).forEach(c => {
+    if(c) c.destroy();
+  });
+  reportCharts.slaTrend = null;
+  reportCharts.typeAvailability = null;
+  reportCharts.worstServices = null;
+  reportCharts.availabilitySplit = null;
 }
+
+function renderReportCharts(rep, slaMonths){
+  destroyReportCharts();
+
+  const byItem = (rep?.by_item || []).slice();
+  const byType = (rep?.by_type || []).slice();
+  const overall = rep?.overall || {};
+
+  const overallAvailability = Number(overall.disponibilidade_pct || 0);
+  const overallTotal = Number(overall.tempo_total_sec || 0);
+  const overallAvailable = Number(overall.tempo_disponivel_sec || 0);
+  const overallUnavailable = Number(overall.tempo_indisponivel_sec || 0);
+
+  const ctxSla = $("chartSlaTrend")?.getContext("2d");
+  if(ctxSla){
+    const values = slaMonths.map(x => Number(x.disponibilidade_pct || 0));
+    const minValue = values.length ? Math.min(...values) : 0;
+    reportCharts.slaTrend = new Chart(ctxSla, {
+      type: "line",
+      data: {
+        labels: slaMonths.map(x => x.label),
+        datasets: [{
+          label: "SLA mensal (%)",
+          data: values,
+          borderWidth: 3,
+          tension: 0.35,
+          fill: false,
+          pointRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          y: {
+            min: Math.max(0, Math.floor(minValue - 1)),
+            max: 100,
+            ticks: {
+              callback: (v) => `${v}%`
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const sortedTypes = byType
+    .slice()
+    .sort((a,b)=> Number(b.disponibilidade_pct || 0) - Number(a.disponibilidade_pct || 0));
+
+  const ctxType = $("chartTypeAvailability")?.getContext("2d");
+  if(ctxType){
+    reportCharts.typeAvailability = new Chart(ctxType, {
+      type: "bar",
+      data: {
+        labels: sortedTypes.map(x => x.tipo || "Sem tipo"),
+        datasets: [{
+          label: "Disponibilidade (%)",
+          data: sortedTypes.map(x => Number(x.disponibilidade_pct || 0)),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: {
+            min: 0,
+            max: 100,
+            ticks: {
+              callback: (v) => `${v}%`
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const worst10 = byItem
+    .slice()
+    .sort((a,b)=> Number(a.disponibilidade_pct || 0) - Number(b.disponibilidade_pct || 0))
+    .slice(0, 10);
+
+  const ctxWorst = $("chartWorstServices")?.getContext("2d");
+  if(ctxWorst){
+    reportCharts.worstServices = new Chart(ctxWorst, {
+      type: "bar",
+      data: {
+        labels: worst10.map(x => x.nome || `#${x.api_id}`),
+        datasets: [{
+          label: "Disponibilidade (%)",
+          data: worst10.map(x => Number(x.disponibilidade_pct || 0)),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              afterLabel: (ctx) => {
+                const item = worst10[ctx.dataIndex];
+                return [
+                  `Indisponível: ${secToHumanFull(item?.tempo_indisponivel_sec || 0)}`,
+                  `Tipo: ${item?.tipo || "Sem tipo"}`
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            min: 0,
+            max: 100,
+            ticks: {
+              callback: (v) => `${v}%`
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const ctxSplit = $("chartAvailabilitySplit")?.getContext("2d");
+  if(ctxSplit){
+    reportCharts.availabilitySplit = new Chart(ctxSplit, {
+      type: "doughnut",
+      data: {
+        labels: ["Disponível", "Indisponível"],
+        datasets: [{
+          data: [overallAvailable, overallUnavailable],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const value = Number(ctx.raw || 0);
+                const total = (ctx.dataset.data || []).reduce((s, v) => s + Number(v || 0), 0);
+                const pct = total ? ((value / total) * 100).toFixed(2) : "0.00";
+                return `${ctx.label}: ${secToHumanFull(value)} (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const ctxTarget = $("chartTargetVsActual")?.getContext("2d");
+  if(ctxTarget){
+    reportCharts.targetVsActual = new Chart(ctxTarget, {
+      type: "bar",
+      data: {
+        labels: ["Meta", "Realizado"],
+        datasets: [{
+          label: "SLA (%)",
+          data: [REPORT_SLA_TARGET, overallAvailability],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.label}: ${Number(ctx.raw || 0).toFixed(4)}%`
+            }
+          }
+        },
+        scales: {
+          y: {
+            min: Math.max(0, Math.floor(Math.min(REPORT_SLA_TARGET, overallAvailability) - 1)),
+            max: 100,
+            ticks: {
+              callback: (v) => `${v}%`
+            }
+          }
+        }
+      }
+    });
+  }
+
+  const belowTarget = byItem.filter(x => Number(x.disponibilidade_pct || 0) < REPORT_SLA_TARGET).length;
+  const withinTarget = Math.max(0, byItem.length - belowTarget);
+
+  const ctxBelow = $("chartBelowTarget")?.getContext("2d");
+  if(ctxBelow){
+    reportCharts.belowTarget = new Chart(ctxBelow, {
+      type: "doughnut",
+      data: {
+        labels: ["Dentro da meta", "Abaixo da meta"],
+        datasets: [{
+          data: [withinTarget, belowTarget],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const value = Number(ctx.raw || 0);
+                const total = (ctx.dataset.data || []).reduce((s, v) => s + Number(v || 0), 0);
+                const pct = total ? ((value / total) * 100).toFixed(2) : "0.00";
+                return `${ctx.label}: ${value} item(ns) (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
 async function loadReports(){
-try{
-const from = $("repFrom").value;
-const to   = $("repTo").value;
-const type = $("repType").value || "";
-const api  = $("repApi").value || "";
-if(!from || !to){
-alert("Informe repFrom e repTo.");
-return;
+  try{
+    const from = $("repFrom").value;
+    const to   = $("repTo").value;
+    const api  = $("repApi").value || "";
+    const tipo = $("repTipo").value || "";
+    const monthsBack = Number($("repMonthsBack").value || 6);
+
+    if(!from || !to){
+      alert("Informe repFrom e repTo.");
+      return;
+    }
+
+    setRepHint("warn","Gerando…");
+
+    const qs = new URLSearchParams({ from, to });
+    if(api) qs.set("api_id", api);
+    if(tipo) qs.set("tipo", tipo);
+
+    const rep = await fetchJson(`/api/reports/availability?${qs.toString()}`, {}, "reports");
+
+    const overall = rep?.overall || {};
+    const byItem = (rep?.by_item || []).slice();
+    const byType = (rep?.by_type || []).slice();
+
+    const periodoDias = diffDaysInclusive(from, to);
+    const periodoSec = periodoDias * 86400;
+
+    $("repTotalItens").textContent = overall.total_itens ?? 0;
+
+    $("repPeriodo").textContent = secToHumanFull(periodoSec);
+    $("repPeriodoSec").textContent = `${periodoSec} s (${periodoDias} dia(s))`;
+
+    const tempoTotalSec = Number(overall.tempo_total_sec || 0);
+    const tempoIndispSec = Number(overall.tempo_indisponivel_sec || 0);
+
+    $("repDisponibilidade").textContent = pctFmt(overall.disponibilidade_pct || 0);
+    $("repIndisponibilidade").textContent = pctFmt(overall.indisponibilidade_pct || 0);
+    $("repTempoIndispReal").textContent = secToHumanFull(tempoIndispSec);
+    $("repTempoIndispRealDesc").textContent = `${tempoIndispSec} s • ${pctFromParts(tempoIndispSec, tempoTotalSec)} do total monitorado`;
+
+    const overallList = $("repOverallList");
+    overallList.innerHTML = "";
+    overallList.innerHTML += metricLine("Indicador", overall.indicador || "Disponibilidade de sistemas críticos");
+    overallList.innerHTML += metricLine("Direção", overall.direcao || "Melhor para cima");
+    overallList.innerHTML += metricLine("Unidade", overall.unidade || "%");
+    overallList.innerHTML += metricLine("Período selecionado", `${secToHumanFull(periodoSec)} (${periodoDias} dia(s))`);
+    overallList.innerHTML += metricLine("Disponibilidade consolidada", pctFmt(overall.disponibilidade_pct || 0));
+    overallList.innerHTML += metricLine("Indisponibilidade consolidada", pctFmt(overall.indisponibilidade_pct || 0));
+    overallList.innerHTML += metricLine("Tempo indisponível no período", `${secToHumanFull(tempoIndispSec)} (${tempoIndispSec}s)`);
+    overallList.innerHTML += metricLine("Meta executiva", pctFmt(REPORT_SLA_TARGET));
+    overallList.innerHTML += metricLine("Leitura executiva", tempoIndispSec > 0 ? "Houve indisponibilidade no período" : "Sem indisponibilidade registrada no período");
+
+    $("repTiposCount").textContent = byType.length;
+    const tiposList = $("repTiposList");
+    tiposList.innerHTML = "";
+    byType
+      .sort((a,b)=> Number(a.disponibilidade_pct || 0) - Number(b.disponibilidade_pct || 0))
+      .forEach(r=>{
+        const el = document.createElement("div");
+        el.className = "inc-item";
+        el.style.cursor = "default";
+        el.innerHTML = `
+          <div style="min-width:0">
+            <strong>${escapeHtml(r.tipo || "Sem tipo")}</strong>
+            <div class="meta">
+              ${escapeHtml(String(r.qtd_itens || 0))} item(ns) • 
+              Total agregado: ${escapeHtml(secToHumanFull(r.tempo_total_sec || 0))} • 
+              Disponível: ${escapeHtml(secToHumanFull(r.tempo_disponivel_sec || 0))} • 
+              Indisponível: ${escapeHtml(secToHumanFull(r.tempo_indisponivel_sec || 0))}
+            </div>
+          </div>
+          <div style="text-align:right">
+            <span class="tag ok">${escapeHtml(pctFmt(r.disponibilidade_pct || 0))}</span>
+            <div class="meta">Indisp: ${escapeHtml(pctFmt(r.indisponibilidade_pct || 0))}</div>
+          </div>
+        `;
+        tiposList.appendChild(el);
+      });
+
+    const worstSorted = byItem
+      .slice()
+      .sort((a,b)=>{
+        const ap = Number(a.disponibilidade_pct || 0);
+        const bp = Number(b.disponibilidade_pct || 0);
+        if (ap !== bp) return ap - bp;
+        return Number(b.tempo_indisponivel_sec || 0) - Number(a.tempo_indisponivel_sec || 0);
+      });
+
+    $("repWorstCount").textContent = worstSorted.length;
+    const worstList = $("repWorstList");
+    worstList.innerHTML = "";
+    worstSorted.slice(0, 10).forEach((r, idx)=>{
+      const el = document.createElement("div");
+      el.className = "inc-item";
+      el.style.cursor = "default";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <strong>#${idx + 1} • ${escapeHtml(r.nome || ("#"+r.api_id))}</strong>
+          <div class="meta">
+            Tipo: ${escapeHtml(r.tipo || "Sem tipo")} • 
+            Indisponível: ${escapeHtml(secToHumanFull(r.tempo_indisponivel_sec || 0))}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <span class="tag bad">${escapeHtml(pctFmt(r.disponibilidade_pct || 0))}</span>
+          <div class="meta">ID ${escapeHtml(String(r.api_id || ""))}</div>
+        </div>
+      `;
+      worstList.appendChild(el);
+    });
+
+    $("repRows").textContent = byItem.length;
+    const list = $("repList");
+    list.innerHTML = "";
+    byItem
+      .slice()
+      .sort((a,b)=> String(a.nome || "").localeCompare(String(b.nome || ""), "pt-BR"))
+      .forEach(r=>{
+        const el = document.createElement("div");
+        el.className = "inc-item";
+        el.style.cursor = "default";
+        el.innerHTML = `
+          <div style="min-width:0">
+            <strong>${escapeHtml(r.nome || ("#"+r.api_id))}</strong>
+            <div class="meta">
+              Tipo: ${escapeHtml(r.tipo || "Sem tipo")} • 
+              Total agregado: ${escapeHtml(secToHumanFull(r.tempo_total_sec || 0))} (${escapeHtml(String(r.tempo_total_sec || 0))}s)
+            </div>
+            <div class="meta">
+              Disponível: ${escapeHtml(secToHumanFull(r.tempo_disponivel_sec || 0))} (${escapeHtml(String(r.tempo_disponivel_sec || 0))}s)
+            </div>
+            <div class="meta">
+              Indisponível: ${escapeHtml(secToHumanFull(r.tempo_indisponivel_sec || 0))} (${escapeHtml(String(r.tempo_indisponivel_sec || 0))}s)
+            </div>
+          </div>
+          <div style="text-align:right">
+            <span class="tag ok">${escapeHtml(pctFmt(r.disponibilidade_pct || 0))}</span>
+            <div class="meta">Indisp: ${escapeHtml(pctFmt(r.indisponibilidade_pct || 0))}</div>
+          </div>
+        `;
+        list.appendChild(el);
+      });
+
+    const slaMonths = await loadMonthlySla(monthsBack, api, tipo);
+    $("repSlaMonthsCount").textContent = slaMonths.length;
+    const slaList = $("repSlaList");
+    slaList.innerHTML = "";
+
+    slaMonths.forEach(r=>{
+      const el = document.createElement("div");
+      el.className = "inc-item";
+      el.style.cursor = "default";
+      el.innerHTML = `
+        <div style="min-width:0">
+          <strong>${escapeHtml(r.label)}</strong>
+          <div class="meta">
+            Itens: ${escapeHtml(String(r.total_itens || 0))} • 
+            Disponível: ${escapeHtml(secToHumanFull(r.tempo_disponivel_sec || 0))} • 
+            Indisponível: ${escapeHtml(secToHumanFull(r.tempo_indisponivel_sec || 0))}
+          </div>
+        </div>
+        <div style="text-align:right">
+          <span class="tag ok">${escapeHtml(pctFmt(r.disponibilidade_pct || 0))}</span>
+          <div class="meta">Indisp: ${escapeHtml(pctFmt(r.indisponibilidade_pct || 0))}</div>
+        </div>
+      `;
+      slaList.appendChild(el);
+    });
+
+    const slaMedio = avg(slaMonths.map(x => Number(x.disponibilidade_pct || 0)));
+    $("repSlaMedio").textContent = pctFmt(slaMedio);
+
+    const abaixoMeta = byItem.filter(x => Number(x.disponibilidade_pct || 0) < REPORT_SLA_TARGET).length;
+    $("repMetaSla").textContent = pctFmt(REPORT_SLA_TARGET);
+    $("repAbaixoMeta").textContent = `${abaixoMeta}`;
+    $("repAbaixoMetaDesc").textContent = `${byItem.length ? ((abaixoMeta / byItem.length) * 100).toFixed(2) : "0.00"}% dos itens`;
+
+    renderReportCharts(rep, slaMonths);
+    $("reportsChartsWrap").classList.remove("hide");
+    $("btnToggleCharts").textContent = "📉 Ocultar gráficos";
+
+    setRepHint("ok", `OK • ${byItem.length} item(ns) • ${byType.length} tipo(s) • SLA ${slaMonths.length} mês(es)`);
+  }catch(e){
+    console.error(e);
+    setRepHint("bad","Erro ao gerar relatório");
+    alert("Falha ao gerar relatório. Veja console do navegador e logs do Node.");
+  }
 }
-setRepHint("warn","Gerando…");
-const qs = new URLSearchParams({ from, to });
-if(type) qs.set("type", type);
-if(api)  qs.set("api_id", api);
-const ov = await fetchJson(`/api/reports/overview?${qs.toString()}`, {}, "reports");
-$("repInc").textContent = ov.total_incidents ?? 0;
-$("repDown").textContent = secToHuman(ov.total_downtime_sec ?? 0);
-$("repMttr").textContent = secToHuman(ov.mttr_sec ?? 0);
-$("repWorst").textContent = ov.worst_service_name || "—";
-const top = $("repTopList");
-top.innerHTML = "";
-const mkRow = (title, rows, fmtVal) => {
-const h = document.createElement("div");
-h.className = "inc-item";
-h.style.cursor = "default";
-h.innerHTML = `<div><strong>${escapeHtml(title)}</strong><div class="meta">Top 10</div></div>`;
-top.appendChild(h);
-(rows||[]).forEach(r=>{
-const el = document.createElement("div");
-el.className = "inc-item";
-el.style.cursor = "default";
-el.innerHTML = `
-<div style="min-width:0">
-<strong>${escapeHtml(r.service_name || ("#"+r.api_id))}</strong>
-<div class="meta">api_id=${escapeHtml(String(r.api_id))}</div>
-</div>
-<div style="text-align:right">
-<span class="tag warn">${escapeHtml(fmtVal(r))}</span>
-</div>
-`;
-top.appendChild(el);
-});
-};
-mkRow("Por downtime", ov.top_by_downtime, (r)=> secToHuman(r.downtime_sec||0));
-mkRow("Por incidentes", ov.top_by_incidents, (r)=> String(r.incidents||0));
-$("repTopHint").textContent = `${(ov.top_by_downtime?.length||0) + (ov.top_by_incidents?.length||0)} itens`;
-const rows = await fetchJson(`/api/reports/incidents?${qs.toString()}`, {}, "reports");
-$("repRows").textContent = rows?.length || 0;
-const list = $("repList");
-list.innerHTML = "";
-(rows||[]).forEach(r=>{
-const el = document.createElement("div");
-el.className = "inc-item";
-el.style.cursor = "default";
-const dur = secToHuman(r.duration_sec || 0);
-el.innerHTML = `
-<div style="min-width:0">
-<strong>${escapeHtml(r.service_name || ("#"+r.api_id))}</strong>
-<div class="meta">${escapeHtml(r.type || "")} • ${escapeHtml(r.opened_at || "")} → ${escapeHtml(r.closed_at || "—")} • ${escapeHtml(dur)}</div>
-<div class="meta" title="${escapeAttr(r.start_detail||"")}">Início: ${escapeHtml((r.start_detail||"").slice(0,120))}${(r.start_detail||"").length>120?"…":""}</div>
-<div class="meta" title="${escapeAttr(r.end_detail||"")}">Fim: ${escapeHtml((r.end_detail||"").slice(0,120))}${(r.end_detail||"").length>120?"…":""}</div>
-</div>
-<div style="text-align:right">
-<span class="tag ${r.type==="OFFLINE" ? "bad" : "warn"}">${escapeHtml(r.type||"")}</span>
-</div>
-`;
-list.appendChild(el);
-});
-setRepHint("ok", `OK • ${rows?.length||0} linha(s)`);
-}catch(e){
-console.error(e);
-setRepHint("bad","Erro ao gerar (veja console / backend)");
-alert("Falha ao gerar relatório. Veja console do navegador e logs do Node.");
+
+function exportCsv(){
+  const from = $("repFrom").value;
+  const to   = $("repTo").value;
+  const api  = $("repApi").value || "";
+  const tipo = $("repTipo").value || "";
+
+  if(!from || !to){
+    alert("Informe repFrom e repTo.");
+    return;
+  }
+
+  const qs = new URLSearchParams({ from, to });
+  if(api) qs.set("api_id", api);
+  if(tipo) qs.set("tipo", tipo);
+
+  const url = `/api/reports/export.csv?${qs.toString()}`;
+  window.open(url, "_blank", "noopener,noreferrer");
 }
+
+function exportXlsx(){
+  const from = $("repFrom").value;
+  const to   = $("repTo").value;
+  const api  = $("repApi").value || "";
+  const tipo = $("repTipo").value || "";
+
+  if(!from || !to){
+    alert("Informe repFrom e repTo.");
+    return;
+  }
+
+  const qs = new URLSearchParams({ from, to });
+  if(api) qs.set("api_id", api);
+  if(tipo) qs.set("tipo", tipo);
+
+  const url = `/api/reports/export.xlsx?${qs.toString()}`;
+  window.open(url, "_blank", "noopener,noreferrer");
 }
-async function exportCsv(){
-const from = $("repFrom").value;
-const to   = $("repTo").value;
-if(!from || !to){
-alert("Informe repFrom e repTo.");
-return;
-}
-const url = `/api/reports/export.csv?${new URLSearchParams({from,to}).toString()}`;
-window.open(url, "_blank", "noopener,noreferrer");
-}
+
 // ===== ALERTAS (regras) =====
 async function loadRules(){
-try{
-const r = await fetchJson("/api/alert-rules", {}, "rules");
-$("ruleOfflineSec").value = r.offline_after_sec ?? 60;
-$("ruleZapOn").value = String(r.notify_whatsapp ?? 1);
-}catch(e){
-$("previewBox").innerHTML = `<span class="mini-dot bad"></span><div><strong>Erro:</strong> /api/alert-rules não respondeu.</div>`;
+  try{
+    const r = await fetchJson("/api/alert-rules", {}, "rules");
+    $("ruleOfflineSec").value = r.offline_after_sec ?? 60;
+    $("ruleZapOn").value = String(r.notify_whatsapp ?? 1);
+  }catch(e){
+    $("previewBox").innerHTML = `<span class="mini-dot bad"></span><div><strong>Erro:</strong> /api/alert-rules não respondeu.</div>`;
+  }
 }
-}
+
 async function saveRules(){
-const payload = {
-offline_after_sec: Number($("ruleOfflineSec").value || 60),
-notify_whatsapp: Number($("ruleZapOn").value || 1)
-};
-await fetchJson("/api/alert-rules", {
-method:"PUT",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify(payload)
-}, "rules");
-alert("Regras salvas!");
+  const payload = {
+    offline_after_sec: Number($("ruleOfflineSec").value || 60),
+    notify_whatsapp: Number($("ruleZapOn").value || 1)
+  };
+  await fetchJson("/api/alert-rules", {
+    method:"PUT",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(payload)
+  }, "rules");
+  alert("Regras salvas!");
 }
+
 function previewAlert(){
-const off = Number($("ruleOfflineSec").value || 60);
-const zap = $("ruleZapOn").value === "1";
-const msg =
+  const off = Number($("ruleOfflineSec").value || 60);
+  const zap = $("ruleZapOn").value === "1";
+  const msg =
 `🚨 NOC ALERTA
 Serviço: API Exemplo
 Status: OFFLINE (ativo)
@@ -2049,294 +2805,335 @@ Regra: OFFLINE > ${off}s
 Quando: ${nowBR()}
 🔁 Recovery será enviado quando voltar ONLINE.
 Canal: ${zap ? "WhatsApp" : "Desativado"}`;
-$("previewBox").innerHTML = `<span class="mini-dot warn"></span><div style="white-space:pre-wrap"><strong>Mensagem:</strong>
+  $("previewBox").innerHTML = `<span class="mini-dot warn"></span><div style="white-space:pre-wrap"><strong>Mensagem:</strong>
 ${escapeHtml(msg)}</div>`;
 }
+
 // ===== TV / Wallboard mode =====
 const TV_SCROLL_STEP = 0.85;
 const TV_SCROLL_INTERVAL_MS = 15000;
 const TV_BEEP_INTERVAL_MS = 30000;
 const tv = {
-enabled: false,
-autoScroll: true,
-timers: { scroll:null, beep:null }
+  enabled: false,
+  autoScroll: true,
+  timers: { scroll:null, beep:null }
 };
+
 function tvHasActiveOffline(){
-return (state.apis || []).some(x => Number(x.ativo)===1 && x.last_status==="OFFLINE");
+  return (state.apis || []).some(x => Number(x.ativo)===1 && x.last_status==="OFFLINE");
 }
+
 function tvStartScroll(){
-if(tv.timers.scroll) clearInterval(tv.timers.scroll);
-if(!tv.autoScroll) return;
-tv.timers.scroll = setInterval(()=>{
-if(!document.body.classList.contains("tv")) return;
-const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 80);
-if(nearBottom){
-window.scrollTo({ top: 0, behavior: "smooth" });
-}else{
-window.scrollBy({ top: Math.round(window.innerHeight * TV_SCROLL_STEP), behavior: "smooth" });
+  if(tv.timers.scroll) clearInterval(tv.timers.scroll);
+  if(!tv.autoScroll) return;
+  tv.timers.scroll = setInterval(()=>{
+    if(!document.body.classList.contains("tv")) return;
+    const nearBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 80);
+    if(nearBottom){
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }else{
+      window.scrollBy({ top: Math.round(window.innerHeight * TV_SCROLL_STEP), behavior: "smooth" });
+    }
+  }, TV_SCROLL_INTERVAL_MS);
 }
-}, TV_SCROLL_INTERVAL_MS);
-}
+
 function tvStopScroll(){
-if(tv.timers.scroll) clearInterval(tv.timers.scroll);
-tv.timers.scroll = null;
+  if(tv.timers.scroll) clearInterval(tv.timers.scroll);
+  tv.timers.scroll = null;
 }
+
 function tvStartBeepLoop(){
-if(tv.timers.beep) clearInterval(tv.timers.beep);
-tv.timers.beep = setInterval(()=>{
-if(!document.body.classList.contains("tv")) return;
-if(state.muted) return;
-if(tvHasActiveOffline()) beep();
-}, TV_BEEP_INTERVAL_MS);
+  if(tv.timers.beep) clearInterval(tv.timers.beep);
+  tv.timers.beep = setInterval(()=>{
+    if(!document.body.classList.contains("tv")) return;
+    if(state.muted) return;
+    if(tvHasActiveOffline()) beep();
+  }, TV_BEEP_INTERVAL_MS);
 }
+
 function tvStopBeepLoop(){
-if(tv.timers.beep) clearInterval(tv.timers.beep);
-tv.timers.beep = null;
+  if(tv.timers.beep) clearInterval(tv.timers.beep);
+  tv.timers.beep = null;
 }
+
 function tvApplyHudDefaults(){
-const sel = $("tvRotation");
-if(sel){
-const cur = String(ROTATION_INTERVAL_MS || (5*60*1000));
-if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
-else sel.value = "30000";
+  const sel = $("tvRotation");
+  if(sel){
+    const cur = String(ROTATION_INTERVAL_MS || (5*60*1000));
+    if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
+    else sel.value = "30000";
+  }
+  const btn = $("tvScrollBtn");
+  if(btn){
+    btn.textContent = tv.autoScroll ? "Scroll: ON" : "Scroll: OFF";
+  }
 }
-const btn = $("tvScrollBtn");
-if(btn){
-btn.textContent = tv.autoScroll ? "Scroll: ON" : "Scroll: OFF";
-}
-}
+
 function enableTVMode(){
-tv.enabled = true;
-document.body.classList.add("tv");
-showPanel("panelMonitor");
-if(!document.fullscreenElement){
-document.documentElement.requestFullscreen?.().catch(()=>{});
+  tv.enabled = true;
+  document.body.classList.add("tv");
+  showPanel("panelMonitor");
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen?.().catch(()=>{});
+  }
+  try{ $("groupByTipo").checked = true; }catch(_){}
+  try{ $("ordem").value = "status"; }catch(_){}
+  tvApplyHudDefaults();
+  tvStartScroll();
+  tvStartBeepLoop();
+  setAutoHint();
 }
-try{ $("groupByTipo").checked = true; }catch(_){}
-try{ $("ordem").value = "status"; }catch(_){}
-tvApplyHudDefaults();
-tvStartScroll();
-tvStartBeepLoop();
-setAutoHint();
-}
+
 function disableTVMode(){
-tv.enabled = false;
-document.body.classList.remove("tv");
-tvStopScroll();
-tvStopBeepLoop();
+  tv.enabled = false;
+  document.body.classList.remove("tv");
+  tvStopScroll();
+  tvStopBeepLoop();
 }
+
 function toggleTVMode(){
-if(document.body.classList.contains("tv")) disableTVMode();
-else enableTVMode();
+  if(document.body.classList.contains("tv")) disableTVMode();
+  else enableTVMode();
 }
+
 // ===== Threshold Modal =====
 function openThresholdModal(){
-$("thresholdInput").value = currentThreshold;
-$("thresholdModal").classList.remove("hide");
+  $("thresholdInput").value = currentThreshold;
+  $("thresholdModal").classList.remove("hide");
 }
+
 function closeThresholdModal(){
-$("thresholdModal").classList.add("hide");
+  $("thresholdModal").classList.add("hide");
 }
+
 function saveThreshold(){
-const val = Number($("thresholdInput").value);
-if(val < 100 || val > 10000){
-alert("Valor deve estar entre 100 e 10000 ms");
-return;
+  const val = Number($("thresholdInput").value);
+  if(val < 100 || val > 10000){
+    alert("Valor deve estar entre 100 e 10000 ms");
+    return;
+  }
+  currentThreshold = val;
+  $("slowMs").value = val;
+  $("slowMsLabel").textContent = `${val}ms`;
+  localStorage.setItem("thresholdMs", String(val));
+  setAutoHint();
+  renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  closeThresholdModal();
+  toast(`Threshold atualizado: ${val}ms ✅`);
 }
-currentThreshold = val;
-$("slowMs").value = val;
-$("slowMsLabel").textContent = `${val}ms`;
-localStorage.setItem("thresholdMs", String(val));
-setAutoHint();
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
-closeThresholdModal();
-toast(`Threshold atualizado: ${val}ms ✅`);
-}
+
 // ===== Rotation Modal =====
 function openRotationModal(){
-const seconds = Math.round(ROTATION_INTERVAL_MS / 1000);
-$("rotationInput").value = seconds;
-$("rotationModal").classList.remove("hide");
+  const seconds = Math.round(ROTATION_INTERVAL_MS / 1000);
+  $("rotationInput").value = seconds;
+  $("rotationModal").classList.remove("hide");
 }
+
 function closeRotationModal(){
-$("rotationModal").classList.add("hide");
+  $("rotationModal").classList.add("hide");
 }
+
 function saveRotation(){
-const seconds = Number($("rotationInput").value);
-if(seconds < 3 || seconds > 300){
-alert("Valor deve estar entre 3 e 300 segundos");
-return;
+  const seconds = Number($("rotationInput").value);
+  if(seconds < 3 || seconds > 300){
+    alert("Valor deve estar entre 3 e 300 segundos");
+    return;
+  }
+  ROTATION_INTERVAL_MS = seconds * 1000;
+  localStorage.setItem("rotationMs", String(ROTATION_INTERVAL_MS));
+  setAutoHint();
+  startRotation();
+  closeRotationModal();
+  toast(`Rotação atualizada: ${seconds}s ✅`);
 }
-ROTATION_INTERVAL_MS = seconds * 1000;
-localStorage.setItem("rotationMs", String(ROTATION_INTERVAL_MS));
-setAutoHint();
-startRotation();
-closeRotationModal();
-toast(`Rotação atualizada: ${seconds}s ✅`);
-}
+
 // ===== Buttons / bindings =====
 $("btnSalvar").onclick = salvarApi;
 $("btnLimpar").onclick = limparForm;
 $("btnLoadReports").onclick = loadReports;
 $("btnExportCsv").onclick = exportCsv;
+$("btnExportXlsx").onclick = exportXlsx;
+$("btnToggleCharts").onclick = ()=>{
+  const wrap = $("reportsChartsWrap");
+  const hidden = wrap.classList.contains("hide");
+  wrap.classList.toggle("hide");
+  $("btnToggleCharts").textContent = hidden ? "📉 Ocultar gráficos" : "📈 Exibir gráficos";
+};
 $("btnExcluir").onclick = async ()=>{
-const id = $("id").value ? Number($("id").value) : null;
-if(!id) return;
-await excluirApi(id);
-limparForm();
+  const id = $("id").value ? Number($("id").value) : null;
+  if(!id) return;
+  await excluirApi(id);
+  limparForm();
 };
 $("btnReload").onclick = ()=> refreshSummary();
 $("btnSair").onclick = async ()=>{ await fetch("/logout", { method:"POST" }); location.href="/login.html"; };
 $("btnTestZap").onclick = async ()=>{
-const msg = prompt("Mensagem de teste:", "🚀 TESTE NOC OK");
-if(!msg) return;
-const r = await fetch("/api/test-whatsapp", {
-method:"POST",
-headers:{ "Content-Type":"application/json" },
-body: JSON.stringify({ msg })
-});
-if(r.status === 403){ location.href="/login.html"; return; }
-const j = await r.json();
-if(j.ok) alert("Teste enviado! zapPronto=" + j.zapPronto);
-else alert("Falha: " + (j.error||"erro") + " | zapPronto=" + j.zapPronto);
+  const msg = prompt("Mensagem de teste:", "🚀 TESTE NOC OK");
+  if(!msg) return;
+  const r = await fetch("/api/test-whatsapp", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ msg })
+  });
+  if(r.status === 403){ location.href="/login.html"; return; }
+  const j = await r.json();
+  if(j.ok) alert("Teste enviado! zapPronto=" + j.zapPronto);
+  else alert("Falha: " + (j.error||"erro") + " | zapPronto=" + j.zapPronto);
 };
 $("btnTV").onclick = ()=>{ toggleTVMode(); };
+
 try{
-$("tvExitBtn").onclick = ()=>{ disableTVMode(); try{ document.exitFullscreen?.(); }catch(_){} };
-$("tvScrollBtn").onclick = ()=>{
-tv.autoScroll = !tv.autoScroll;
-$("tvScrollBtn").textContent = tv.autoScroll ? "Scroll: ON" : "Scroll: OFF";
-if(tv.autoScroll) tvStartScroll(); else tvStopScroll();
-};
-$("tvRotation").addEventListener("change", ()=>{
-const v = Number($("tvRotation").value || 30000);
-ROTATION_INTERVAL_MS = v;
-localStorage.setItem("rotationMs", String(v));
-setAutoHint();
-startRotation();
-});
+  $("tvExitBtn").onclick = ()=>{ disableTVMode(); try{ document.exitFullscreen?.(); }catch(_){} };
+  $("tvScrollBtn").onclick = ()=>{
+    tv.autoScroll = !tv.autoScroll;
+    $("tvScrollBtn").textContent = tv.autoScroll ? "Scroll: ON" : "Scroll: OFF";
+    if(tv.autoScroll) tvStartScroll(); else tvStopScroll();
+  };
+  $("tvRotation").addEventListener("change", ()=>{
+    const v = Number($("tvRotation").value || 30000);
+    ROTATION_INTERVAL_MS = v;
+    localStorage.setItem("rotationMs", String(v));
+    setAutoHint();
+    startRotation();
+  });
 }catch(_){}
+
 $("btnMute").onclick = ()=>{
-state.muted = !state.muted;
-$("btnMute").textContent = state.muted ? "🔊 Ativar som" : "🔇 Silenciar";
+  state.muted = !state.muted;
+  $("btnMute").textContent = state.muted ? "🔊 Ativar som" : "🔇 Silenciar";
 };
+
 $("btnUnpin").onclick = async ()=>{
-state.pinnedByUser = false;
-setPinBadge("AUTO");
-setAutoHint();
-await applySelectionPolicy();
+  state.pinnedByUser = false;
+  setPinBadge("AUTO");
+  setAutoHint();
+  await applySelectionPolicy();
 };
+
 $("btnAuto").onclick = async ()=>{
-state.pinnedByUser = false;
-setPinBadge("AUTO");
-setAutoHint();
-await applySelectionPolicy();
+  state.pinnedByUser = false;
+  setPinBadge("AUTO");
+  setAutoHint();
+  await applySelectionPolicy();
 };
+
 $("btnTrocar").onclick = async ()=>{ await forceNextService(); };
+
 // Threshold modal bindings
 $("btnEditThreshold").onclick = ()=>{ openThresholdModal(); };
 $("btnCloseThreshold").onclick = ()=>{ closeThresholdModal(); };
 $("btnCancelThreshold").onclick = ()=>{ closeThresholdModal(); };
 $("btnSaveThreshold").onclick = ()=>{ saveThreshold(); };
+
 // Rotation modal bindings
 $("btnEditRotation").onclick = ()=>{ openRotationModal(); };
 $("btnCloseRotation").onclick = ()=>{ closeRotationModal(); };
 $("btnCancelRotation").onclick = ()=>{ closeRotationModal(); };
 $("btnSaveRotation").onclick = ()=>{ saveRotation(); };
+
 ["q","filtro","ordem","filtroTipo"].forEach(id=>{
-$(id).addEventListener("input", ()=>{
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  $(id).addEventListener("input", ()=>{
+    renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  });
+  $(id).addEventListener("change", ()=>{
+    renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  });
 });
-$(id).addEventListener("change", ()=>{
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
-});
-});
+
 $("groupByTipo").addEventListener("change", ()=>{
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  renderCards(aplicarFiltrosEOrdenacao(state.apis));
 });
+
 $("slowMs").addEventListener("input", ()=>{
-$("slowMsLabel").textContent = `${$("slowMs").value}ms`;
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
+  $("slowMsLabel").textContent = `${$("slowMs").value}ms`;
+  renderCards(aplicarFiltrosEOrdenacao(state.apis));
 });
+
 $("metodo").addEventListener("change", mostrarCamposPorMetodo);
+
 $("autoRefresh").addEventListener("change", ()=>{
-if($("autoRefresh").checked) startAuto();
-else stopAuto();
+  if($("autoRefresh").checked) startAuto();
+  else stopAuto();
 });
+
 $("btnTabMonitor").onclick = ()=> showPanel("panelMonitor");
 $("btnTabReports").onclick = ()=> showPanel("panelReports");
 $("btnTabAlerts").onclick = ()=> showPanel("panelAlerts");
+
 $("btnLoadRules").onclick = loadRules;
 $("btnSaveRules").onclick = saveRules;
 $("btnPreviewAlert").onclick = previewAlert;
+
 // Atalhos
 document.addEventListener("keydown", async (e)=>{
-if(e.key === "/"){
-e.preventDefault();
-$("q").focus();
-}
-if(e.key === "Escape"){
-if(!$("thresholdModal").classList.contains("hide")){
-closeThresholdModal();
-return;
-}
-if(!$("rotationModal").classList.contains("hide")){
-closeRotationModal();
-return;
-}
-state.pinnedByUser = false;
-state.pinnedId = null;
-state.selectedId = null;
-setPinBadge("AUTO");
-setAutoHint();
-if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.update(); }
-renderCards(aplicarFiltrosEOrdenacao(state.apis));
-await applySelectionPolicy();
-}
+  if(e.key === "/"){
+    e.preventDefault();
+    $("q").focus();
+  }
+  if(e.key === "Escape"){
+    if(!$("thresholdModal").classList.contains("hide")){
+      closeThresholdModal();
+      return;
+    }
+    if(!$("rotationModal").classList.contains("hide")){
+      closeRotationModal();
+      return;
+    }
+    state.pinnedByUser = false;
+    state.pinnedId = null;
+    state.selectedId = null;
+    setPinBadge("AUTO");
+    setAutoHint();
+    if(chart){ chart.data.labels=[]; chart.data.datasets[0].data=[]; chart.update(); }
+    renderCards(aplicarFiltrosEOrdenacao(state.apis));
+    await applySelectionPolicy();
+  }
 });
+
 document.addEventListener("fullscreenchange", ()=>{
-if(!document.fullscreenElement && document.body.classList.contains("tv")){
-disableTVMode();
-}
+  if(!document.fullscreenElement && document.body.classList.contains("tv")){
+    disableTVMode();
+  }
 });
+
 // ===== Init =====
 function initDefaults(){
-$("slowMsLabel").textContent = `${$("slowMs").value}ms`;
-// Load saved threshold from localStorage
-const savedThreshold = localStorage.getItem("thresholdMs");
-if(savedThreshold){
-currentThreshold = Number(savedThreshold);
-$("slowMs").value = currentThreshold;
-$("slowMsLabel").textContent = `${currentThreshold}ms`;
-$("thresholdInput").value = currentThreshold;
+  $("slowMsLabel").textContent = `${$("slowMs").value}ms`;
+  const savedThreshold = localStorage.getItem("thresholdMs");
+  if(savedThreshold){
+    currentThreshold = Number(savedThreshold);
+    $("slowMs").value = currentThreshold;
+    $("slowMsLabel").textContent = `${currentThreshold}ms`;
+    $("thresholdInput").value = currentThreshold;
+  }
+  const savedRotation = localStorage.getItem("rotationMs");
+  if(savedRotation){
+    ROTATION_INTERVAL_MS = Number(savedRotation);
+  }
+  try{
+    const today = new Date();
+    if(!$("repTo").value) $("repTo").value = ymd(today);
+    const d7 = new Date(Date.now() - 7*24*60*60*1000);
+    if(!$("repFrom").value) $("repFrom").value = ymd(d7);
+  }catch(e){}
 }
-// Load saved rotation from localStorage
-const savedRotation = localStorage.getItem("rotationMs");
-if(savedRotation){
-ROTATION_INTERVAL_MS = Number(savedRotation);
-}
-try{
-const today = new Date();
-if(!$("repTo").value) $("repTo").value = ymd(today);
-const d7 = new Date(Date.now() - 7*24*60*60*1000);
-if(!$("repFrom").value) $("repFrom").value = ymd(d7);
-}catch(e){}
-}
+
 function init(){
-setGlobal("warn","Carregando…");
-setPinBadge("AUTO");
-setAutoHint();
-mostrarCamposPorMetodo();
-initDefaults();
-tickClock();
-showStale();
-state.timers.clock = setInterval(tickClock, 1000);
-state.timers.stale = setInterval(showStale, 1000);
-showPanel("panelMonitor");
-refreshSummary();
-startRotation();
-startAuto();
+  setGlobal("warn","Carregando…");
+  setPinBadge("AUTO");
+  setAutoHint();
+  mostrarCamposPorMetodo();
+  initDefaults();
+  tickClock();
+  showStale();
+  state.timers.clock = setInterval(tickClock, 1000);
+  state.timers.stale = setInterval(showStale, 1000);
+  showPanel("panelMonitor");
+  refreshSummary();
+  startRotation();
+  startAuto();
 }
+
 init();
 </script>
 </body>
